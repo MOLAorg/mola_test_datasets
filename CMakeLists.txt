@@ -16,4 +16,9 @@ project(mola_test_datasets)
 add_library(${PROJECT_NAME} INTERFACE)
 
 # Install files:
-# TODO
+install(DIRECTORY
+  datasets
+  DESTINATION 
+    share/${PROJECT_NAME}
+)
+
