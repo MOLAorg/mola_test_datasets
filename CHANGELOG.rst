@@ -2,8 +2,8 @@
 Changelog for package mola_test_datasets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.2.2 (2023-09-08)
+------------------
 * Fix package name in docs
 * Build as correct ament package. Add license file
 * Add package.xml and reorganize data files
