@@ -14,7 +14,7 @@ if("$ENV{ROS_VERSION}" STREQUAL "2")
 	set(DETECTED_ROS2 TRUE)
 endif()
 
-project(mola_test_datasets)
+project(mola_test_datasets LANGUAGES CXX)
 
 # Instrumental lib:
 add_library(${PROJECT_NAME} INTERFACE)
