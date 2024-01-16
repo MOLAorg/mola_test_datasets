@@ -9,6 +9,6 @@ Small SLAM dataset extracts used for demos or unit tests from the main MOLA repo
 
 
 ## License
+Each dataset holds the license of their original authors, as specified in each subdirectory's README.
 
-Each dataset file holds the license of their original authors.
-Refer to each subdirectory.
+The rest of files in this root directory and those without an explicit LICENSE file are covered by the BSD 3-Clause license.
