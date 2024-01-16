@@ -13,7 +13,16 @@
 
   <url type="website">https://github.com/MOLAorg/</url>
 
+  <!-- ROS package files and READMEs -->
   <license file="LICENSE">BSD</license>
+
+  <!-- Dataset licenses -->
+  <license file="datasets/g2o/LICENSE">BSD</license>
+  <license file="datasets/kitti/LICENSE">CC-BY-NC-SA-3.0</license>
+  <license file="datasets/radish/LICENSE">CC-BY-3.0</license>
+  <license file="datasets/ual/LICENSE">CC-BY-3.0</license>
+
+
 
   <doc_depend>doxygen</doc_depend>
 
