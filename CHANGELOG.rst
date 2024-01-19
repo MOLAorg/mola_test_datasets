@@ -2,8 +2,8 @@
 Changelog for package mola_test_datasets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.3.0 (2024-01-20)
+------------------
 * clarify copyright notices.
 * add file attribute to <license> tag
 * minor fixes
