@@ -2,6 +2,13 @@
 Changelog for package mola_test_datasets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* clarify copyright notices.
+* add file attribute to <license> tag
+* minor fixes
+* Contributors: Jose Luis Blanco-Claraco
+
 0.2.2 (2023-09-08)
 ------------------
 * Fix package name in docs
