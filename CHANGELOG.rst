@@ -2,8 +2,8 @@
 Changelog for package mola_test_datasets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.3.1 (2024-04-02)
+------------------
 * Fix all radish rawlog timestamps (Carmen logs did not include timing)
 * Contributors: Jose Luis Blanco-Claraco
 
