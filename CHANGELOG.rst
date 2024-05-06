@@ -2,8 +2,8 @@
 Changelog for package mola_test_datasets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.3.2 (2024-05-06)
+------------------
 * bump cmake_minimum_required to 3.5
 * Contributors: Jose Luis Blanco-Claraco
 
