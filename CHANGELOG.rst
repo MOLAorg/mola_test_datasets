@@ -2,6 +2,11 @@
 Changelog for package mola_test_datasets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* bump cmake_minimum_required to 3.5
+* Contributors: Jose Luis Blanco-Claraco
+
 0.3.1 (2024-04-02)
 ------------------
 * Fix all radish rawlog timestamps (Carmen logs did not include timing)
