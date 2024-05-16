@@ -1,0 +1,22 @@
+bad:
+  - global: kitti02_g007.mm
+    local: kitti02_l033.mm
+    final_pose: [91.163778, -25.791168, 4.834164, 147.969193, 5.678289, -0.155349]
+    final_icp_quality: 0.375
+
+  - global: kitti02_g007.mm
+    local: kitti02_l033.mm
+    final_pose: [105.932022, -8.753910, 3.770530, 149.999978, 4.629159, 0.159391]
+    final_icp_quality: 0.382
+
+good:
+  - global: kitti02_g007.mm
+    local: kitti02_l033.mm
+    final_pose: [105.190351, -21.145401, 5.086860, 152.719455, 5.683916, 0.131596]
+    final_icp_quality: 0.674
+
+  - global: mulranDCC02_g002.mm
+    local: mulranDCC02_l044.mm
+    final_pose: [30.987385, 1.369138, 0.728799, 168.392832, 2.576069, 0.394847]
+    final_icp_quality: 0.80
+  
