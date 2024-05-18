@@ -2,8 +2,8 @@
 Changelog for package mola_test_datasets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.3.3 (2024-05-18)
+------------------
 * add loop_closure example datasets
 * Contributors: Jose Luis Blanco-Claraco
 
