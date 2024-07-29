@@ -2,8 +2,8 @@
 Changelog for package mola_test_datasets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.3.4 (2024-07-29)
+------------------
 * Add new warehouse RSLidar test dataset with XYZIR channels
 * add MVSim warehouse 01 dataset resulting simplemaps
 * Add tree index for html version
