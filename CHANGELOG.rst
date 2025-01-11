@@ -2,8 +2,8 @@
 Changelog for package mola_test_datasets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.0 (2025-01-11)
+------------------
 * Add extract of KAIST01 from Mulran dataset with LiDAR, IMU, GPS and GT
 * Contributors: Jose Luis Blanco-Claraco
 
