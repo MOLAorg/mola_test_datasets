@@ -2,6 +2,11 @@
 Changelog for package mola_test_datasets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add extract of KAIST01 from Mulran dataset with LiDAR, IMU, GPS and GT
+* Contributors: Jose Luis Blanco-Claraco
+
 0.3.4 (2024-07-29)
 ------------------
 * Add new warehouse RSLidar test dataset with XYZIR channels
