@@ -2,8 +2,8 @@
 Changelog for package mola_test_datasets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.1 (2025-05-24)
+------------------
 * readme: update badges to include kilted
 * cmake: silent warning if using CMAKE_EXPORT_COMPILE_COMMANDS (this is a non-code package)
 * package.xml: Update license tag to "BSD-3-Clause"
