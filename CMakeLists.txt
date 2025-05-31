@@ -36,5 +36,5 @@ if (DETECTED_ROS2)
 endif()
 
 # Silent cmake warning:
-set(dummy CMAKE_EXPORT_COMPILE_COMMANDS)
+set(dummy ${CMAKE_EXPORT_COMPILE_COMMANDS})
 unset(dummy)
