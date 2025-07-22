@@ -2,6 +2,12 @@
 Changelog for package mola_test_datasets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Use ament linters
+* Fix cmake silent of CMAKE_EXPORT_COMPILE_COMMANDS not used warning
+* Contributors: Jose Luis Blanco-Claraco
+
 0.4.1 (2025-05-24)
 ------------------
 * readme: update badges to include kilted
