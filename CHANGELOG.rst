@@ -2,8 +2,8 @@
 Changelog for package mola_test_datasets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.2 (2025-07-22)
+------------------
 * Use ament linters
 * Fix cmake silent of CMAKE_EXPORT_COMPILE_COMMANDS not used warning
 * Contributors: Jose Luis Blanco-Claraco
