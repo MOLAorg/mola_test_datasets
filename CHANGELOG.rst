@@ -2,8 +2,8 @@
 Changelog for package mola_test_datasets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.0 (2026-06-16)
+------------------
 * fix: Add correct timestamps to kitti extracts
 * docs: add ROS 2 Lyrical badge row, update Rolling to Ubuntu 26.04 (resolute)
 * Contributors: Jose Luis Blanco-Claraco
