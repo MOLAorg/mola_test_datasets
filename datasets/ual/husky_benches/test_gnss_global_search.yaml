@@ -1,22 +1,26 @@
 # Localization with the initial pose from the state estimator, which fuses the
-# u-blox GNSS (no RTK, sigma ~4 m, ~5 m off the ground truth here) and the
-# absolute attitude IMU (azimuth) while the robot stands still, in the
-# geo-referenced map. That pose is too uncertain for ICP alone: LIO must search
-# for it in the map around it (global search), where the repeated benches and
-# the long wall give several similar matches.
+# u-blox GNSS (no RTK, sigma ~4 m, ~5 m off the ground truth here, and its
+# altitude ~9 m off the map) while the robot stands still, in the
+# geo-referenced map. No heading source: the HandsFree IMU of this robot does
+# not give an absolute azimuth. That pose is too uncertain for ICP alone: LIO
+# must search for it in the map around it (global search, also in heading),
+# where the repeated benches and the long wall give several similar matches.
 dataset: dataset.yaml
 
 initial_localization:
   method: InitLocalization::FromStateEstimator
   gnss_mode: relocalize
   gnss_topic: /a200_0812/gnss/ublox
-  attitude_imu_topic: /a200_0812/taobotics/imu
   env:
     MOLA_LO_INIT_GLOBAL_SEARCH: true
-    # The state estimator reports convergence with position sigmas up to the
-    # global search limit (MOLA_LO_INIT_GLOBAL_SEARCH_MAX_POS_SIGMA, 5 m):
-    # without RTK, its z sigma stays above 1 m.
+    # Enough for the GNSS bias of this dataset, and a shorter search:
+    MOLA_LO_INIT_GLOBAL_SEARCH_MAX_XY: 6.0
+    # The state estimator reports convergence with the uncertainty the global
+    # search can handle: position sigmas up to its limit
+    # (MOLA_LO_INIT_GLOBAL_SEARCH_MAX_POS_SIGMA, 5 m; without RTK, the z sigma
+    # stays above 1 m) and any heading:
     MOLA_SE_CONVERGENCE_POS_SIGMA: 5.0
+    MOLA_SE_CONVERGENCE_ORI_SIGMA: 180.0
 
 expected:
   # Compared with the ground truth over the last seconds of the fragment
