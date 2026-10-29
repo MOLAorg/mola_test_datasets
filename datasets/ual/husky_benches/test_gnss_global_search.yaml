@@ -7,6 +7,11 @@
 # where the repeated benches and the long wall give several similar matches.
 dataset: dataset.yaml
 
+# The search (no heading) takes ~40 s on a desktop PC, and it assumes the robot
+# is still meanwhile: at this rate it fits in the first ~16 s of the fragment,
+# before the robot moves, even on a machine twice as slow.
+bag_rate: 0.2
+
 initial_localization:
   method: InitLocalization::FromStateEstimator
   gnss_mode: relocalize
