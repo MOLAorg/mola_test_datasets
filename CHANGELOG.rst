@@ -2,8 +2,8 @@
 Changelog for package mola_test_datasets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.6.0 (2026-11-01)
+------------------
 * New husky_benches dataset: Husky A200 Ouster fragment with map and ground truth, for initial localization tests
 * Test datasets converted to the MRPT 3 format (`#3 <https://github.com/MOLAorg/mola_test_datasets/issues/3>`_)
 * CI: GitHub release workflow on version tags
