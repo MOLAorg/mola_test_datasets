@@ -2,8 +2,8 @@
 Changelog for package mola_test_datasets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.6.1 (2026-11-10)
+------------------
 * husky_benches: store bag QoS policies as integers so Humble can play it
   Humble's rosbag2 fails to parse string-valued QoS policies ("bad conversion").
   Newer distros accept both formats. Message data is unchanged.
