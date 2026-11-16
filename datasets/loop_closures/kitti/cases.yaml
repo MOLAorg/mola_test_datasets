@@ -1,0 +1,460 @@
+# Loop closure registration cases from the KITTI odometry benchmark (see
+# README.md, LICENSE).
+#
+# Each case registers `local` against `global` (.mm files, one "points" layer,
+# each in its own keyframe frame). Poses are [x, y, z, yaw, pitch, roll]
+# ([m], [deg]) of `local` seen from `global`.
+#  - kind: loop (they overlap; a registration must find reference_pose),
+#    wrong_match (they do not overlap at the matched place, or barely; a
+#    registration method found the given wrong_solutions in the past) or
+#    no_loop (far apart; a registration must report failure).
+#  - reference_pose: ground truth refined by ICP (reference_quality: ratio of
+#    paired points); gt_pose: the ground truth relative pose before refinement
+#    (off by up to ~1.5 m at some revisits).
+#  - initial_guess_odometry: the relative pose from LiDAR-only odometry
+#    without loop closure (the guess a SLAM back end would have);
+#    odometry_error: its error vs the ground truth [m, deg].
+#  - global_odometry_pose, local_odometry_pose: poses of the two keyframes in
+#    that odometry frame (the first scan's): roll and pitch are estimated, not
+#    absolute, but drift little on these mostly level roads.
+#  - gt_distance: distance between the two keyframes [m].
+#  - Names: <sequence>_<what makes the case hard>: yaw (revisit facing another
+#    way), drift (largest odometry error), far (largest separation), typical,
+#    none, gterr<N> (the ground truth is 3-7 m off there: reference from ICP
+#    only, which converges to the same pose from the ground truth and from the
+#    loop a mapper accepted); _map: the global side is a local map of 21 keyframes.
+cases:
+  - name: kitti00_yaw
+    kind: loop
+    global: kitti/kitti00_kf0651.mm
+    local: kitti/kitti00_kf2082.mm
+    reference_pose: [-1.003200, 0.181000, -0.018900, 138.160000, 2.040000, 0.470000]
+    reference_quality: 0.809
+    gt_pose: [-0.212009, -0.416000, 1.071090, 138.140558, 2.037780, 0.520287]
+    initial_guess_odometry: [-8.455659, -2.311626, -4.933961, 135.422935, 2.010510, 0.243617]
+    global_odometry_pose: [89.808223, 9.319979, -1.099053, -136.044733, 1.305025, 1.356279]
+    local_odometry_pose: [94.452505, 16.845901, -5.892475, -0.638176, 0.129080, 0.193746]
+    gt_distance: 1.17
+    odometry_error: [10.37, 2.72]
+  - name: kitti00_drift
+    kind: loop
+    global: kitti/kitti00_kf0002.mm
+    local: kitti/kitti00_kf2022.mm
+    reference_pose: [-0.917100, -0.000100, -0.004400, -8.570000, -0.030000, 0.830000]
+    reference_quality: 0.813
+    gt_pose: [-0.116117, 0.430028, 0.414439, -8.694512, -1.031270, 0.783129]
+    initial_guess_odometry: [1.461821, 16.944381, -7.407307, -12.545577, -0.598183, 0.627932]
+    global_odometry_pose: [2.849876, 0.042707, 0.011787, 0.915109, -0.318211, 0.011783]
+    local_odometry_pose: [4.081959, 17.010453, -7.383802, -11.631494, -0.906236, 0.708564]
+    gt_distance: 0.61
+    odometry_error: [18.34, 3.88]
+  - name: kitti00_drift_map
+    kind: loop
+    global: kitti/kitti00_kf0002_map.mm
+    local: kitti/kitti00_kf2022.mm
+    reference_pose: [-0.904000, -0.004800, -0.005500, -8.570000, -0.050000, 0.840000]
+    reference_quality: 0.961
+    gt_pose: [-0.116117, 0.430028, 0.414439, -8.694512, -1.031270, 0.783129]
+    initial_guess_odometry: [1.461821, 16.944381, -7.407307, -12.545577, -0.598183, 0.627932]
+    global_odometry_pose: [2.849876, 0.042707, 0.011787, 0.915109, -0.318211, 0.011783]
+    local_odometry_pose: [4.081959, 17.010453, -7.383802, -11.631494, -0.906236, 0.708564]
+    gt_distance: 0.61
+    odometry_error: [18.34, 3.88]
+  - name: kitti00_far
+    kind: loop
+    global: kitti/kitti00_kf0326.mm
+    local: kitti/kitti00_kf1597.mm
+    reference_pose: [-23.186300, 0.243400, -0.243500, -0.550000, -0.140000, 0.730000]
+    reference_quality: 0.445
+    gt_pose: [-23.311914, 0.106509, -1.253864, -0.660639, -0.246221, 0.933009]
+    initial_guess_odometry: [-30.681782, -5.049648, -2.836601, -3.428284, 0.260781, 0.608894]
+    global_odometry_pose: [370.912229, 71.975322, 1.719624, 94.614881, 2.484171, -1.583939]
+    local_odometry_pose: [378.497407, 41.717715, 0.356072, 91.177054, 2.645682, -1.121135]
+    gt_distance: 23.35
+    odometry_error: [9.13, 2.83]
+  - name: kitti00_near
+    kind: loop
+    global: kitti/kitti00_kf0028.mm
+    local: kitti/kitti00_kf2046.mm
+    reference_pose: [0.045900, 0.161500, -0.006300, -0.150000, -0.310000, -0.370000]
+    reference_quality: 0.914
+    gt_pose: [-0.000532, 0.091014, 0.223539, 0.218874, -0.405698, -0.263456]
+    initial_guess_odometry: [3.298424, 13.614995, -6.952694, -4.118278, -0.768822, -0.697500]
+    global_odometry_pose: [50.036767, 3.037640, 0.391550, 4.170937, 0.123699, -0.191348]
+    local_odometry_pose: [52.322823, 16.832144, -6.613679, 0.055355, -0.659179, -0.897250]
+    gt_distance: 0.24
+    odometry_error: [15.66, 4.38]
+  - name: kitti00_extra0
+    kind: loop
+    global: kitti/kitti00_kf0249.mm
+    local: kitti/kitti00_kf1535.mm
+    reference_pose: [0.003000, 0.012200, 0.000500, -0.490000, 0.000000, -0.020000]
+    reference_quality: 0.905
+    gt_pose: [0.313498, 0.145810, -0.466157, -1.226351, 0.122427, 0.018177]
+    initial_guess_odometry: [4.406109, -3.911155, -2.659603, -3.287890, -0.394825, -0.345931]
+    global_odometry_pose: [304.024302, 19.045871, 2.423335, 3.074367, -0.211159, -1.085182]
+    local_odometry_pose: [308.645980, 15.327566, -0.145462, -0.205588, -0.667802, -1.417279]
+    gt_distance: 0.58
+    odometry_error: [6.17, 2.16]
+  - name: kitti00_typical
+    kind: loop
+    global: kitti/kitti00_kf0225.mm
+    local: kitti/kitti00_kf1526.mm
+    reference_pose: [22.813600, 0.390500, -0.010500, 0.660000, 0.340000, -0.050000]
+    reference_quality: 0.544
+    gt_pose: [23.190613, 0.111185, -0.594637, -0.308507, 0.434851, -0.189956]
+    initial_guess_odometry: [27.256692, -2.979581, -2.743752, -2.118196, -0.122983, -0.617558]
+    global_odometry_pose: [269.862912, 17.180548, 1.987207, 2.250897, -0.728874, -0.056269]
+    local_odometry_pose: [297.248339, 15.272377, -0.406666, 0.132593, -0.853439, -0.646847]
+    gt_distance: 23.2
+    odometry_error: [5.54, 1.94]
+  - name: kitti00_none
+    kind: no_loop
+    global: kitti/kitti00_kf0326.mm
+    local: kitti/kitti00_kf2022.mm
+    reference_pose: [-37.812711, 373.688009, 5.916658, -102.945907, 1.402275, 2.807338]
+    initial_guess_odometry: [-24.853990, 370.203638, 0.042717, -106.273882, 1.309841, 2.649677]
+    global_odometry_pose: [370.912229, 71.975322, 1.719624, 94.614881, 2.484171, -1.583939]
+    local_odometry_pose: [4.081959, 17.010453, -7.383802, -11.631494, -0.906236, 0.708564]
+    gt_distance: 375.64
+    odometry_error: [14.65, 3.33]
+  - name: kitti02_yaw
+    kind: loop
+    global: kitti/kitti02_kf2048.mm
+    local: kitti/kitti02_kf2939.mm
+    reference_pose: [0.508100, 2.315400, -0.039000, 179.960000, 0.750000, 1.980000]
+    reference_quality: 0.695
+    gt_pose: [0.363249, 2.168098, 0.433122, 179.898820, 0.741836, 2.105767]
+    initial_guess_odometry: [1.496814, 6.540220, 1.617286, 178.781142, 0.497030, 2.514029]
+    global_odometry_pose: [872.695818, -206.821323, 15.056493, -120.913662, -4.249265, -0.063673]
+    local_odometry_pose: [877.602908, -211.360557, 16.772992, 57.863886, 4.746686, 2.487116]
+    gt_distance: 2.24
+    odometry_error: [4.67, 1.22]
+  - name: kitti02_drift
+    kind: loop
+    global: kitti/kitti02_kf0973.mm
+    local: kitti/kitti02_kf2775.mm
+    reference_pose: [7.823700, -0.276100, 0.078100, 0.790000, 0.250000, -0.200000]
+    reference_quality: 0.758
+    gt_pose: [8.434766, 0.699410, 0.921783, 0.674081, 0.428713, -0.612725]
+    initial_guess_odometry: [0.004870, -1.779813, 3.199961, -1.464759, 0.265206, -0.237038]
+    global_odometry_pose: [694.299572, -369.741945, 35.965781, 27.172142, 4.799322, 3.267509]
+    local_odometry_pose: [695.428882, -371.364619, 39.047841, 25.719044, 5.146040, 2.907898]
+    gt_distance: 8.51
+    odometry_error: [9.08, 2.18]
+  - name: kitti02_drift_map
+    kind: loop
+    global: kitti/kitti02_kf0973_map.mm
+    local: kitti/kitti02_kf2775.mm
+    reference_pose: [7.755800, -0.293100, 0.109500, 0.820000, 0.320000, -0.460000]
+    reference_quality: 0.987
+    gt_pose: [8.434766, 0.699410, 0.921783, 0.674081, 0.428713, -0.612725]
+    initial_guess_odometry: [0.004870, -1.779813, 3.199961, -1.464759, 0.265206, -0.237038]
+    global_odometry_pose: [694.299572, -369.741945, 35.965781, 27.172142, 4.799322, 3.267509]
+    local_odometry_pose: [695.428882, -371.364619, 39.047841, 25.719044, 5.146040, 2.907898]
+    gt_distance: 8.51
+    odometry_error: [9.08, 2.18]
+  - name: kitti02_far
+    kind: loop
+    global: kitti/kitti02_kf2025.mm
+    local: kitti/kitti02_kf2964.mm
+    reference_pose: [22.818300, 6.308700, 0.591100, 90.170000, 7.490000, -5.400000]
+    reference_quality: 0.383
+    gt_pose: [22.418407, 6.598317, 0.990194, 90.250024, 7.591031, -5.400880]
+    initial_guess_odometry: [27.674742, 6.918891, 2.923624, 89.395290, 7.346434, -4.949073]
+    global_odometry_pose: [877.477279, -163.435763, 13.465766, -45.773003, 5.696580, 2.615465]
+    local_odometry_pose: [901.766411, -178.671379, 13.939084, 44.098859, 4.767430, 0.794722]
+    gt_distance: 23.39
+    odometry_error: [5.61, 1.05]
+  - name: kitti02_none
+    kind: no_loop
+    global: kitti/kitti02_kf0973.mm
+    local: kitti/kitti02_kf2964.mm
+    reference_pose: [278.298902, 86.088714, -6.209861, 19.132414, 1.370562, -4.135348]
+    initial_guess_odometry: [272.715637, 75.163688, -3.496734, 16.831062, 1.122376, -3.728514]
+    global_odometry_pose: [694.299572, -369.741945, 35.965781, 27.172142, 4.799322, 3.267509]
+    local_odometry_pose: [901.766411, -178.671379, 13.939084, 44.098859, 4.767430, 0.794722]
+    gt_distance: 291.38
+    odometry_error: [12.57, 2.36]
+  - name: kitti05_yaw
+    kind: loop
+    global: kitti/kitti05_kf0225.mm
+    local: kitti/kitti05_kf0523.mm
+    reference_pose: [15.238200, -6.970800, 0.371900, 154.400000, 2.680000, 1.060000]
+    reference_quality: 0.49
+    gt_pose: [15.283420, -6.893339, 0.406598, 154.582994, 2.669706, 1.079111]
+    initial_guess_odometry: [13.797722, -6.303270, 0.411449, 153.652968, 2.813311, 1.005539]
+    global_odometry_pose: [149.578180, -212.933211, 8.286871, 8.916315, 0.698874, -0.314473]
+    local_odometry_pose: [164.190118, -217.018770, 8.564581, 162.597765, 2.326448, 1.597979]
+    gt_distance: 16.77
+    odometry_error: [1.6, 0.94]
+  - name: kitti05_drift
+    kind: loop
+    global: kitti/kitti05_kf0007.mm
+    local: kitti/kitti05_kf0974.mm
+    reference_pose: [-0.955900, 14.401800, -0.378700, -86.530000, 0.140000, 2.680000]
+    reference_quality: 0.589
+    gt_pose: [-1.173756, 14.391489, -0.160075, -86.443678, 0.183907, 2.770612]
+    initial_guess_odometry: [-0.815301, 19.391014, -1.461972, -89.085935, 0.077628, 3.041909]
+    global_odometry_pose: [9.575557, 0.169424, 0.188746, 1.216707, 0.306868, -0.105495]
+    local_odometry_pose: [8.340742, 19.535860, -1.304539, -87.869093, -0.022958, 2.733397]
+    gt_distance: 14.44
+    odometry_error: [5.18, 2.66]
+  - name: kitti05_drift_map
+    kind: loop
+    global: kitti/kitti05_kf0007_map.mm
+    local: kitti/kitti05_kf0974.mm
+    reference_pose: [-0.941200, 14.418200, -0.386400, -86.540000, 0.130000, 2.630000]
+    reference_quality: 0.914
+    gt_pose: [-1.173756, 14.391489, -0.160075, -86.443678, 0.183907, 2.770612]
+    initial_guess_odometry: [-0.815301, 19.391014, -1.461972, -89.085935, 0.077628, 3.041909]
+    global_odometry_pose: [9.575557, 0.169424, 0.188746, 1.216707, 0.306868, -0.105495]
+    local_odometry_pose: [8.340742, 19.535860, -1.304539, -87.869093, -0.022958, 2.733397]
+    gt_distance: 14.44
+    odometry_error: [5.18, 2.66]
+  - name: kitti05_far
+    kind: loop
+    global: kitti/kitti05_kf0374.mm
+    local: kitti/kitti05_kf1127.mm
+    reference_pose: [18.495100, 10.954400, 0.029700, 28.460000, 0.310000, -0.040000]
+    reference_quality: 0.475
+    gt_pose: [18.592070, 10.946364, -0.056187, 28.579826, 0.384997, -0.042520]
+    initial_guess_odometry: [18.484020, 6.160142, 0.002260, 26.620365, 0.214620, -0.063441]
+    global_odometry_pose: [232.092983, 3.973361, 5.261794, -27.113545, -0.922231, 1.236274]
+    local_odometry_pose: [251.348478, 1.033107, 5.694449, -0.488962, -1.163793, 0.628499]
+    gt_distance: 21.58
+    odometry_error: [4.79, 1.97]
+  - name: kitti05_near
+    kind: loop
+    global: kitti/kitti05_kf0562.mm
+    local: kitti/kitti05_kf1077.mm
+    reference_pose: [2.275800, -0.027000, 0.029500, -85.500000, 0.290000, 0.760000]
+    reference_quality: 0.785
+    gt_pose: [2.257611, -0.009376, -0.064972, -85.518026, 0.283836, 0.823746]
+    initial_guess_odometry: [-0.056802, 3.022490, -0.339059, -86.645469, 0.316573, 0.775124]
+    global_odometry_pose: [176.942241, 1.985930, 3.874875, 85.388358, 0.954753, -1.394985]
+    local_odometry_pose: [173.933538, 2.164745, 3.463339, -1.239135, -1.019999, -0.259776]
+    gt_distance: 2.26
+    odometry_error: [3.82, 1.13]
+  - name: kitti05_typical
+    kind: loop
+    global: kitti/kitti05_kf0346.mm
+    local: kitti/kitti05_kf1074.mm
+    reference_pose: [-6.566200, 5.917000, -0.138200, -36.400000, -0.650000, 0.260000]
+    reference_quality: 0.638
+    gt_pose: [-6.473986, 5.942352, -0.094193, -36.586737, -0.665807, 0.349723]
+    initial_guess_odometry: [-9.309566, 5.966192, -0.415864, -38.243757, -0.766782, 0.311217]
+    global_odometry_pose: [178.811946, 3.042719, 3.768429, 36.441018, -0.074508, -0.949367]
+    local_odometry_pose: [167.783927, 2.306699, 3.241663, -1.790048, -1.412895, -0.388475]
+    gt_distance: 8.79
+    odometry_error: [2.85, 1.66]
+  - name: kitti05_none
+    kind: no_loop
+    global: kitti/kitti05_kf0523.mm
+    local: kitti/kitti05_kf0974.mm
+    reference_pose: [215.842775, -178.822573, 4.246490, 110.843815, 2.165691, 1.057942]
+    initial_guess_odometry: [219.683959, -179.072982, 4.043000, 109.533198, 2.260809, 1.074990]
+    global_odometry_pose: [164.190118, -217.018770, 8.564581, 162.597765, 2.326448, 1.597979]
+    local_odometry_pose: [8.340742, 19.535860, -1.304539, -87.869093, -0.022958, 2.733397]
+    gt_distance: 280.33
+    odometry_error: [3.85, 1.31]
+  - name: kitti06_yaw
+    kind: loop
+    global: kitti/kitti06_kf0010.mm
+    local: kitti/kitti06_kf0379.mm
+    reference_pose: [8.719200, 15.810400, -0.488700, -179.930000, 1.600000, 1.950000]
+    reference_quality: 0.6
+    gt_pose: [8.763934, 15.890380, -0.533221, -179.981452, 1.636641, 2.027925]
+    initial_guess_odometry: [8.732621, 15.719548, -0.537682, -179.953464, 1.634138, 1.933828]
+    global_odometry_pose: [14.386478, -0.012540, 0.216803, -0.074390, -0.026301, 0.085502]
+    local_odometry_pose: [23.139737, 15.696441, -0.293412, 179.969707, 1.660507, 1.848312]
+    gt_distance: 18.15
+    odometry_error: [0.17, 0.1]
+  - name: kitti06_drift
+    kind: loop
+    global: kitti/kitti06_kf0208.mm
+    local: kitti/kitti06_kf0604.mm
+    reference_pose: [0.269400, -0.691600, -0.005600, -17.630000, -0.360000, -0.540000]
+    reference_quality: 0.797
+    gt_pose: [0.227036, -0.712849, 0.106740, -17.658998, -0.373870, -0.661474]
+    initial_guess_odometry: [-0.005365, -1.354633, -0.057694, -17.702990, -0.386798, -0.604529]
+    global_odometry_pose: [295.814308, -0.374893, 4.966908, 16.387452, -0.261434, -0.333562]
+    local_odometry_pose: [296.191652, -1.676245, 4.917077, -1.313962, -0.737279, -0.842813]
+    gt_distance: 0.76
+    odometry_error: [0.7, 0.07]
+  - name: kitti06_drift_map
+    kind: loop
+    global: kitti/kitti06_kf0208_map.mm
+    local: kitti/kitti06_kf0604.mm
+    reference_pose: [0.272600, -0.694300, 0.003100, -17.610000, -0.360000, -0.630000]
+    reference_quality: 0.979
+    gt_pose: [0.227036, -0.712849, 0.106740, -17.658998, -0.373870, -0.661474]
+    initial_guess_odometry: [-0.005365, -1.354633, -0.057694, -17.702990, -0.386798, -0.604529]
+    global_odometry_pose: [295.814308, -0.374893, 4.966908, 16.387452, -0.261434, -0.333562]
+    local_odometry_pose: [296.191652, -1.676245, 4.917077, -1.313962, -0.737279, -0.842813]
+    gt_distance: 0.76
+    odometry_error: [0.7, 0.07]
+  - name: kitti06_far
+    kind: loop
+    global: kitti/kitti06_kf0090.mm
+    local: kitti/kitti06_kf0303.mm
+    reference_pose: [7.925200, 18.353100, -0.054200, 178.700000, 2.080000, 1.820000]
+    reference_quality: 0.545
+    gt_pose: [8.038271, 18.466447, -0.070629, 178.596426, 2.087714, 1.851620]
+    initial_guess_odometry: [7.919304, 18.325800, -0.046147, 178.692354, 2.085161, 1.736481]
+    global_odometry_pose: [130.577829, -0.790790, 1.706970, -0.003390, 0.140011, -0.804788]
+    local_odometry_pose: [138.497452, 17.532086, 1.384077, 178.718497, 1.963345, 2.544726]
+    gt_distance: 20.14
+    odometry_error: [0.19, 0.15]
+  - name: kitti06_near
+    kind: loop
+    global: kitti/kitti06_kf0475.mm
+    local: kitti/kitti06_kf0527.mm
+    reference_pose: [-3.710400, 15.854200, -0.269700, -179.180000, 0.510000, 2.590000]
+    reference_quality: 0.599
+    gt_pose: [-3.634315, 16.024779, -0.190899, -178.933353, 0.510224, 2.675501]
+    initial_guess_odometry: [-3.721139, 15.858350, -0.280265, -179.170101, 0.531921, 2.673017]
+    global_odometry_pose: [-109.491911, 15.332699, -1.184458, 179.307820, 0.960260, 2.423279]
+    local_odometry_pose: [-105.969659, -0.567030, -0.731649, 0.114468, -0.393631, 0.236355]
+    gt_distance: 16.43
+    odometry_error: [0.21, 0.24]
+  - name: kitti06_typical
+    kind: loop
+    global: kitti/kitti06_kf0000.mm
+    local: kitti/kitti06_kf0599.mm
+    reference_pose: [-1.418300, 0.013700, -0.011800, -0.130000, 0.000000, 0.060000]
+    reference_quality: 0.821
+    gt_pose: [-1.457145, 0.058853, -0.104554, 0.542133, -0.167616, -0.434318]
+    initial_guess_odometry: [-1.439414, -0.133745, -0.108097, -0.243140, -0.047781, 0.217941]
+    global_odometry_pose: [0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000]
+    local_odometry_pose: [-1.439414, -0.133745, -0.108097, -0.243140, -0.047781, 0.217941]
+    gt_distance: 1.46
+    odometry_error: [0.19, 1.03]
+  - name: kitti06_none
+    kind: no_loop
+    global: kitti/kitti06_kf0475.mm
+    local: kitti/kitti06_kf0604.mm
+    reference_pose: [-404.916675, 12.159693, -3.285472, 179.662280, 0.867257, 1.477754]
+    initial_guess_odometry: [-405.904692, 12.066364, -1.212353, 179.388246, 0.249012, 1.569926]
+    global_odometry_pose: [-109.491911, 15.332699, -1.184458, 179.307820, 0.960260, 2.423279]
+    local_odometry_pose: [296.191652, -1.676245, 4.917077, -1.313962, -0.737279, -0.842813]
+    gt_distance: 405.11
+    odometry_error: [2.3, 0.68]
+  - name: kitti07_yaw
+    kind: loop
+    global: kitti/kitti07_kf0002.mm
+    local: kitti/kitti07_kf0399.mm
+    reference_pose: [-0.486800, -1.136200, -0.027400, -30.920000, -0.220000, 0.690000]
+    reference_quality: 0.829
+    gt_pose: [-0.475862, -1.044843, 0.021828, -30.825816, -0.239978, 0.796668]
+    initial_guess_odometry: [-1.284373, -0.765312, -0.862810, -31.573318, -0.276213, 0.954960]
+    global_odometry_pose: [3.920332, 1.615082, 0.062886, 36.123475, -0.213682, -1.386516]
+    local_odometry_pose: [3.348780, 0.224908, -0.785937, 4.561202, -1.184142, -0.114597]
+    gt_distance: 1.15
+    odometry_error: [1.23, 0.76]
+  - name: kitti07_typical
+    kind: loop
+    global: kitti/kitti07_kf0000.mm
+    local: kitti/kitti07_kf0394.mm
+    reference_pose: [-3.771000, 0.117500, -0.077600, 3.930000, -0.280000, -0.860000]
+    reference_quality: 0.772
+    gt_pose: [-3.774798, 0.407635, 0.083098, 4.135764, -0.292853, -0.983594]
+    initial_guess_odometry: [-4.563596, 0.013065, -0.922199, 3.280766, -0.396109, -0.711679]
+    global_odometry_pose: [-0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000]
+    local_odometry_pose: [-4.563596, 0.013065, -0.922199, 3.280766, -0.396109, -0.711679]
+    gt_distance: 3.8
+    odometry_error: [1.34, 0.9]
+  - name: kitti08_yaw
+    kind: loop
+    global: kitti/kitti08_kf0372.mm
+    local: kitti/kitti08_kf0681.mm
+    reference_pose: [-0.231000, 1.554200, -0.017100, -179.910000, 1.960000, 2.180000]
+    reference_quality: 0.795
+    gt_pose: [-0.569870, 1.337854, -1.065898, -179.793147, 2.027837, 2.293932]
+    initial_guess_odometry: [-0.776433, 2.339650, 0.264603, 179.501905, 2.117799, 2.034305]
+    global_odometry_pose: [112.369222, 200.695030, -4.285259, 0.073097, 0.122645, 0.309018]
+    local_odometry_pose: [111.590402, 203.032227, -4.006380, 179.563621, 1.992441, 1.726179]
+    gt_distance: 1.8
+    odometry_error: [1.68, 0.75]
+  - name: kitti08_drift
+    kind: loop
+    global: kitti/kitti08_kf1091.mm
+    local: kitti/kitti08_kf1760.mm
+    reference_pose: [-1.462100, 1.556900, 0.019400, 69.760000, -0.400000, -2.050000]
+    reference_quality: 0.781
+    gt_pose: [-0.258243, 2.161709, 0.596299, 70.618467, -0.407510, -2.077654]
+    initial_guess_odometry: [-0.200202, 0.273262, -1.894561, 68.848719, 0.143952, -2.018428]
+    global_odometry_pose: [287.697470, -124.522370, 2.928210, 23.919466, 2.116579, -2.106585]
+    local_odometry_pose: [287.367845, -124.446024, 1.033577, 92.839101, 2.871388, -0.802705]
+    gt_distance: 2.26
+    odometry_error: [3.13, 1.85]
+  - name: kitti08_drift_map
+    kind: loop
+    global: kitti/kitti08_kf1091_map.mm
+    local: kitti/kitti08_kf1760.mm
+    reference_pose: [-1.445100, 1.543400, 0.018900, 69.750000, -0.400000, -2.130000]
+    reference_quality: 0.975
+    gt_pose: [-0.258243, 2.161709, 0.596299, 70.618467, -0.407510, -2.077654]
+    initial_guess_odometry: [-0.200202, 0.273262, -1.894561, 68.848719, 0.143952, -2.018428]
+    global_odometry_pose: [287.697470, -124.522370, 2.928210, 23.919466, 2.116579, -2.106585]
+    local_odometry_pose: [287.367845, -124.446024, 1.033577, 92.839101, 2.871388, -0.802705]
+    gt_distance: 2.26
+    odometry_error: [3.13, 1.85]
+  - name: kitti08_far
+    kind: loop
+    global: kitti/kitti08_kf0395.mm
+    local: kitti/kitti08_kf0651.mm
+    reference_pose: [-2.188700, -8.771900, -0.047900, 115.320000, 0.300000, -0.670000]
+    reference_quality: 0.666
+    gt_pose: [-2.184072, -8.673288, -0.041060, 115.640713, 0.317709, -0.674913]
+    initial_guess_odometry: [-2.168419, -8.104997, 0.350349, 114.909007, 0.373893, -0.861837]
+    global_odometry_pose: [158.253983, 207.316419, -3.538520, 65.218718, 0.832499, -1.745635]
+    local_odometry_pose: [164.694350, 201.964560, -2.909994, -179.833832, 1.606084, 0.628981]
+    gt_distance: 8.94
+    odometry_error: [0.69, 0.76]
+  - name: kitti08_typical
+    kind: loop
+    global: kitti/kitti08_kf0373.mm
+    local: kitti/kitti08_kf0673.mm
+    reference_pose: [12.452400, 1.386300, 0.042700, 176.780000, 1.310000, 1.780000]
+    reference_quality: 0.663
+    gt_pose: [12.092485, 1.157439, -0.928802, 176.792294, 1.304188, 1.930244]
+    initial_guess_odometry: [11.853049, 2.006758, 0.380740, 176.181066, 1.421126, 1.695197]
+    global_odometry_pose: [115.184072, 200.699150, -4.246174, -0.461097, -0.612289, 0.166448]
+    local_odometry_pose: [127.048070, 202.609379, -3.732963, 175.714642, 2.020960, 1.488219]
+    gt_distance: 12.18
+    odometry_error: [1.58, 0.66]
+  - name: kitti08_gterr0
+    kind: loop
+    global: kitti/kitti08_kf0021.mm
+    local: kitti/kitti08_kf0839.mm
+    reference_pose: [0.842700, 2.083600, -0.009100, 178.640000, 1.950000, 1.760000]
+    reference_quality: 0.691
+    gt_pose: [3.411851, 1.088858, -6.016745, -179.628765, 1.967884, 2.182131]
+    initial_guess_odometry: [2.810452, 6.438176, -1.272371, 177.524185, 2.559149, 0.847754]
+    global_odometry_pose: [22.222550, 29.271350, -0.540164, 92.365693, 2.283109, -0.383211]
+    local_odometry_pose: [15.684755, 31.759426, -1.966483, -90.090502, 0.294636, 1.328912]
+    gt_distance: 7.0
+    odometry_error: [7.18, 3.15]
+  - name: kitti08_gterr1
+    kind: loop
+    global: kitti/kitti08_kf0051.mm
+    local: kitti/kitti08_kf0790.mm
+    reference_pose: [-0.058300, 0.046200, -0.021400, 179.220000, 1.680000, -0.550000]
+    reference_quality: 0.805
+    gt_pose: [1.245917, -0.411545, -3.494007, -179.960390, 1.784760, -0.419773]
+    initial_guess_odometry: [1.785826, 3.114305, -0.602078, 178.091409, 2.216776, -1.278696]
+    global_odometry_pose: [19.561977, 95.114205, -2.448493, 89.702024, 2.788620, -2.160221]
+    local_odometry_pose: [16.481716, 96.878977, -3.253565, -92.120269, -0.500079, 0.970761]
+    gt_distance: 3.73
+    odometry_error: [4.59, 2.15]
+  - name: kitti08_none
+    kind: no_loop
+    global: kitti/kitti08_kf0681.mm
+    local: kitti/kitti08_kf1091.mm
+    reference_pose: [-175.288296, 326.431335, -10.214309, -155.626227, 2.564684, 0.819336]
+    initial_guess_odometry: [-178.729797, 326.077523, -9.105540, -155.502546, 3.216952, 0.291357]
+    global_odometry_pose: [111.590402, 203.032227, -4.006380, 179.563621, 1.992441, 1.726179]
+    local_odometry_pose: [287.697470, -124.522370, 2.928210, 23.919466, 2.116579, -2.106585]
+    gt_distance: 370.66
+    odometry_error: [3.63, 0.85]
