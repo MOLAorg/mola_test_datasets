@@ -8,3 +8,5 @@ unit tests of loop closure registration (global registration and ICP).
   `../mulran`).
 - `vbr/`: 55 cases (single scans and small local maps) from the VBR dataset,
   CC BY-SA 4.0. See `vbr/README.md` and `vbr/cases.yaml`.
+- `husky/`: 12 harder cases (sparse scans, large odometry drift, low overlap)
+  from Husky A200 runs, CC BY 3.0. See `husky/README.md`.
