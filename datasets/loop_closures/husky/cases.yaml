@@ -1,0 +1,165 @@
+# Loop closure registration cases from Husky A200 runs of the University of Almeria (see README.md, LICENSE).
+#
+# Each case registers `local` against `global` (.mm files, one "points" layer,
+# each in its own keyframe frame). Poses are [x, y, z, yaw, pitch, roll]
+# ([m], [deg]) of `local` seen from `global`.
+#  - kind: loop (they overlap; a registration must find reference_pose),
+#    wrong_match (they do not overlap at the matched place, or barely; a
+#    registration method found the given wrong_solutions in the past) or
+#    no_loop (far apart; a registration must report failure).
+#  - reference_pose: ground truth from RTK GNSS (position) and an odometry-to-RTK
+#    track fit (yaw), refined by ICP (reference_quality: ratio of
+#    paired points); gt_pose: the ground truth relative pose before refinement.
+#  - initial_guess_odometry: the relative pose from LiDAR-inertial odometry
+#    without loop closure (the guess a SLAM back end would have);
+#    odometry_error: its error vs the ground truth [m, deg].
+#  - global_odometry_pose, local_odometry_pose: poses of the two keyframes in
+#    that odometry frame, which is gravity aligned (roll and pitch are absolute,
+#    x, y, z and yaw drift).
+#  - gt_distance: distance between the two keyframes [m].
+#  - Names: <sequence>_<what makes the case hard>: yaw (revisit facing another
+#    way), drift (largest odometry error), far (largest separation), typical,
+#    wrong<N>, none; _map: the global side is a local map of 21 keyframes.
+cases:
+  - name: husky03_yaw
+    kind: loop
+    global: husky/husky03_kf0798.mm
+    local: husky/husky03_kf1437.mm
+    reference_pose: [-14.728600, -2.205900, 0.351200, -138.910000, -2.370000, -0.420000]
+    reference_quality: 0.343
+    gt_pose: [-14.747095, -2.118552, 0.469587, -140.142899, -0.943194, 0.039610]
+    initial_guess_odometry: [-15.238469, 20.444313, -0.501863, -142.484632, -1.029940, 0.081109]
+    global_odometry_pose: [-16.701688, 38.651718, 2.517209, -15.586188, -2.118585, -1.022427]
+    local_odometry_pose: [-25.849054, 62.415460, 1.087881, -158.108083, 0.028697, 2.181831]
+    gt_distance: 14.91
+    odometry_error: [22.59, 2.34]
+  - name: husky03_drift
+    kind: loop
+    global: husky/husky03_kf0029.mm
+    local: husky/husky03_kf0819.mm
+    reference_pose: [-14.636000, -0.975000, 0.329400, -1.000000, -0.530000, 0.150000]
+    reference_quality: 0.331
+    gt_pose: [-14.612032, -0.987838, -0.163047, -0.947146, -2.340817, -0.732307]
+    initial_guess_odometry: [-17.213125, 37.165796, 2.728478, -7.234038, -2.349730, -0.674478]
+    global_odometry_pose: [12.407058, 0.906294, -0.384321, 3.064770, 0.519895, 0.118683]
+    local_odometry_pose: [-6.742077, 37.094312, 2.577209, -4.171708, -1.819027, -0.622183]
+    gt_distance: 14.65
+    odometry_error: [38.35, 6.28]
+  - name: husky03_drift_map
+    kind: loop
+    global: husky/husky03_kf0029_map.mm
+    local: husky/husky03_kf0819.mm
+    reference_pose: [-14.636000, -0.975000, 0.329400, -1.000000, -0.530000, 0.150000]
+    reference_quality: 0.331
+    gt_pose: [-14.612032, -0.987838, -0.163047, -0.947146, -2.340817, -0.732307]
+    initial_guess_odometry: [-17.213125, 37.165796, 2.728478, -7.234038, -2.349730, -0.674478]
+    global_odometry_pose: [12.407058, 0.906294, -0.384321, 3.064770, 0.519895, 0.118683]
+    local_odometry_pose: [-6.742077, 37.094312, 2.577209, -4.171708, -1.819027, -0.622183]
+    gt_distance: 14.65
+    odometry_error: [38.35, 6.28]
+  - name: husky03_far
+    kind: loop
+    global: husky/husky03_kf0092.mm
+    local: husky/husky03_kf0877.mm
+    reference_pose: [-14.818500, -1.316100, 0.373000, -0.190000, -0.030000, 0.410000]
+    reference_quality: 0.333
+    gt_pose: [-14.934431, -1.377318, -0.252228, -0.150965, -1.599753, -1.132136]
+    initial_guess_odometry: [-17.467498, 33.879219, 3.495471, -6.085693, -1.621623, -1.055894]
+    global_odometry_pose: [39.171350, 2.820852, -1.366645, 3.175218, 0.723736, 0.251055]
+    local_odometry_pose: [19.902324, 35.667551, 2.497587, -2.915828, -0.875343, -0.882980]
+    gt_distance: 15.0
+    odometry_error: [35.55, 5.93]
+  - name: husky03_near
+    kind: loop
+    global: husky/husky03_kf0071.mm
+    local: husky/husky03_kf0898.mm
+    reference_pose: [2.730600, -0.794600, -0.068800, 0.590000, -0.570000, 1.000000]
+    reference_quality: 0.841
+    gt_pose: [2.793457, -0.875163, 0.042187, 0.737231, -2.306224, -0.310476]
+    initial_guess_odometry: [-0.340395, 33.407681, 3.601296, -5.597319, -2.272973, -0.196826]
+    global_odometry_pose: [30.360617, 1.955353, -1.026618, 2.521285, 1.040117, -0.257252]
+    local_odometry_pose: [28.612878, 35.334295, 2.430256, -3.062669, -1.262863, -0.554341]
+    gt_distance: 2.93
+    odometry_error: [34.61, 6.33]
+  - name: husky03_extra1
+    kind: loop
+    global: husky/husky03_kf0302.mm
+    local: husky/husky03_kf1138.mm
+    reference_pose: [-7.435600, -7.194000, 0.145000, 91.840000, -0.930000, -0.010000]
+    reference_quality: 0.382
+    gt_pose: [-7.403529, -7.210204, 0.407354, 92.008743, 1.068811, 0.816749]
+    initial_guess_odometry: [22.868034, -9.569949, 3.653073, 86.561650, 1.071846, 0.438718]
+    global_odometry_pose: [55.933661, 84.033207, -2.899702, 87.886694, -0.081454, 3.975233]
+    local_odometry_pose: [66.570290, 106.520040, 0.113650, 174.448661, -2.901117, 0.595834]
+    gt_distance: 10.34
+    odometry_error: [30.54, 5.45]
+  - name: husky03_typical
+    kind: loop
+    global: husky/husky03_kf0716.mm
+    local: husky/husky03_kf1318.mm
+    reference_pose: [-8.788300, -0.258600, 0.155400, -0.090000, 0.470000, 0.040000]
+    reference_quality: 0.564
+    gt_pose: [-8.831089, -0.274108, 0.494021, -0.055791, 1.124369, 1.172989]
+    initial_guess_odometry: [-31.944775, 4.371358, 1.153226, -3.545065, 1.151744, 0.928602]
+    global_odometry_pose: [-21.828661, 69.238286, 2.201735, -97.883237, -3.995575, -0.576216]
+    local_odometry_pose: [-13.106016, 100.279707, 1.082351, -101.443487, -2.871821, 0.601344]
+    gt_distance: 8.85
+    odometry_error: [23.59, 3.49]
+  - name: husky03_none
+    kind: no_loop
+    global: husky/husky03_kf1138.mm
+    local: husky/husky03_kf1437.mm
+    reference_pose: [91.977484, 71.121132, -5.881704, 26.851044, 2.886145, 2.960747]
+    initial_guess_odometry: [87.656202, 52.799246, -4.015984, 27.448683, 2.877874, 2.990498]
+    global_odometry_pose: [66.570290, 106.520040, 0.113650, 174.448661, -2.901117, 0.595834]
+    local_odometry_pose: [-25.849054, 62.415460, 1.087881, -158.108083, 0.028697, 2.181831]
+    gt_distance: 116.42
+    odometry_error: [18.92, 0.6]
+  - name: husky10_yaw
+    kind: loop
+    global: husky/husky10_kf0037.mm
+    local: husky/husky10_kf1117.mm
+    reference_pose: [-8.430000, -1.146400, 0.199400, 178.890000, -2.630000, -0.450000]
+    reference_quality: 0.579
+    gt_pose: [-7.847341, -0.825136, 2.457463, 179.995057, -1.960706, -1.892743]
+    initial_guess_odometry: [-1.857364, 0.334760, -0.959430, 177.147933, -1.917223, -1.878561]
+    global_odometry_pose: [3.755315, 16.579896, -0.401610, 82.281904, -0.307007, 0.867848]
+    local_odometry_pose: [3.160473, 14.791356, -1.365798, -100.540346, -1.653549, -2.760966]
+    gt_distance: 8.26
+    odometry_error: [6.99, 2.85]
+  - name: husky10_drift
+    kind: loop
+    global: husky/husky10_kf0003.mm
+    local: husky/husky10_kf1150.mm
+    reference_pose: [-10.354900, 5.709300, 0.153500, 131.070000, -2.050000, 0.310000]
+    reference_quality: 0.557
+    gt_pose: [-10.294760, 6.403240, 2.367359, 131.245267, -3.948477, -0.207351]
+    initial_guess_odometry: [-6.511773, 12.096584, -0.790167, 128.381214, -3.933784, -0.277337]
+    global_odometry_pose: [2.397760, 0.857303, -0.117613, 38.874942, 0.667312, 1.258939]
+    local_odometry_pose: [-10.277333, 6.195459, -0.565942, 167.269799, -5.334934, -0.536918]
+    gt_distance: 12.35
+    odometry_error: [7.53, 2.87]
+  - name: husky10_drift_map
+    kind: loop
+    global: husky/husky10_kf0003_map.mm
+    local: husky/husky10_kf1150.mm
+    reference_pose: [-10.354900, 5.709300, 0.153500, 131.070000, -2.050000, 0.310000]
+    reference_quality: 0.557
+    gt_pose: [-10.294760, 6.403240, 2.367359, 131.245267, -3.948477, -0.207351]
+    initial_guess_odometry: [-6.511773, 12.096584, -0.790167, 128.381214, -3.933784, -0.277337]
+    global_odometry_pose: [2.397760, 0.857303, -0.117613, 38.874942, 0.667312, 1.258939]
+    local_odometry_pose: [-10.277333, 6.195459, -0.565942, 167.269799, -5.334934, -0.536918]
+    gt_distance: 12.35
+    odometry_error: [7.53, 2.87]
+  - name: husky10_typical
+    kind: loop
+    global: husky/husky10_kf0021.mm
+    local: husky/husky10_kf1094.mm
+    reference_pose: [-4.493000, -1.515800, 0.136200, -11.360000, -0.140000, -0.370000]
+    reference_quality: 0.73
+    gt_pose: [-3.876703, -1.215296, 2.452676, -11.388653, -0.441719, 1.281100]
+    initial_guess_odometry: [2.215998, -1.028123, -1.196065, -13.822594, -0.527618, 1.250914]
+    global_odometry_pose: [3.942116, 8.800531, -0.277203, 91.846155, -1.134005, 1.817592]
+    local_odometry_pose: [4.859112, 11.071120, -1.461179, 78.010952, -1.194298, 3.287012]
+    gt_distance: 4.75
+    odometry_error: [7.1, 2.44]
