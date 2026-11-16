@@ -1,0 +1,678 @@
+# Loop closure registration cases from the VBR dataset (see README.md, LICENSE).
+#
+# Each case registers `local` against `global` (.mm files, one "points" layer,
+# each in its own keyframe frame). Poses are [x, y, z, yaw, pitch, roll]
+# ([m], [deg]) of `local` seen from `global`.
+#  - kind: loop (they overlap; a registration must find reference_pose),
+#    wrong_match (they do not overlap at the matched place, or barely; a
+#    registration method found the given wrong_solutions in the past) or
+#    no_loop (far apart; a registration must report failure).
+#  - reference_pose: ground truth refined by ICP (reference_quality: ratio of
+#    paired points); gt_pose: the ground truth relative pose before refinement.
+#  - initial_guess_odometry: the relative pose from LiDAR-inertial odometry
+#    without loop closure (the guess a SLAM back end would have);
+#    odometry_error: its error vs the ground truth [m, deg].
+#  - global_odometry_pose, local_odometry_pose: poses of the two keyframes in
+#    that odometry frame, which is gravity aligned (roll and pitch are absolute,
+#    x, y, z and yaw drift).
+#  - gt_distance: distance between the two keyframes [m].
+#  - Names: <sequence>_<what makes the case hard>: yaw (revisit facing another
+#    way), drift (largest odometry error), far (largest separation), typical,
+#    wrong<N>, none; _map: the global side is a local map of 21 keyframes.
+cases:
+  - name: campus0_yaw
+    kind: loop
+    global: vbr/campus0_kf0072.mm
+    local: vbr/campus0_kf1187.mm
+    reference_pose: [0.299300, 0.312200, 0.002900, 179.990000, -0.430000, -0.770000]
+    reference_quality: 0.784
+    gt_pose: [-0.053740, 0.308292, 0.027895, -179.970871, -0.416699, -0.704027]
+    initial_guess_odometry: [1.675662, 3.310379, -0.472208, 178.130076, -0.258249, -0.462742]
+    global_odometry_pose: [90.090427, -49.980837, -0.917995, 14.089858, 1.420001, -1.176715]
+    local_odometry_pose: [90.898837, -46.375588, -1.499445, -167.785726, -1.639041, 0.759827]
+    gt_distance: 0.31
+    odometry_error: [3.5, 1.92]
+  - name: campus0_drift
+    kind: loop
+    global: vbr/campus0_kf0003.mm
+    local: vbr/campus0_kf1245.mm
+    reference_pose: [0.661900, 0.388900, -0.010900, -169.030000, 0.120000, -0.040000]
+    reference_quality: 0.761
+    gt_pose: [0.448632, 0.340479, -0.004511, -169.634629, 0.101178, 0.116998]
+    initial_guess_odometry: [7.048211, 1.972975, -1.090293, -171.605068, 0.036258, 0.424547]
+    global_odometry_pose: [7.167158, 4.157506, 0.012498, 50.919979, -0.929108, 1.352099]
+    local_odometry_pose: [10.069370, 10.900855, -0.916510, -120.686599, 1.152789, -0.777456]
+    gt_distance: 0.56
+    odometry_error: [6.88, 2.0]
+  - name: campus0_drift_map
+    kind: loop
+    global: vbr/campus0_kf0003_map.mm
+    local: vbr/campus0_kf1245.mm
+    reference_pose: [0.651900, 0.371200, -0.010000, -169.200000, 0.130000, -0.040000]
+    reference_quality: 0.922
+    gt_pose: [0.448632, 0.340479, -0.004511, -169.634629, 0.101178, 0.116998]
+    initial_guess_odometry: [7.048211, 1.972975, -1.090293, -171.605068, 0.036258, 0.424547]
+    global_odometry_pose: [7.167158, 4.157506, 0.012498, 50.919979, -0.929108, 1.352099]
+    local_odometry_pose: [10.069370, 10.900855, -0.916510, -120.686599, 1.152789, -0.777456]
+    gt_distance: 0.56
+    odometry_error: [6.88, 2.0]
+  - name: campus0_far
+    kind: loop
+    global: vbr/campus0_kf0444.mm
+    local: vbr/campus0_kf0526.mm
+    reference_pose: [10.416200, -12.218200, -0.006000, -38.400000, -0.390000, 0.350000]
+    reference_quality: 0.377
+    gt_pose: [10.235631, -12.444822, -0.006636, -39.131360, -0.206642, 0.347385]
+    initial_guess_odometry: [10.298455, -12.479401, -0.025146, -39.127234, -0.122638, 0.366175]
+    global_odometry_pose: [115.204195, -201.710506, 3.739366, -37.024777, -0.791078, -1.187737]
+    local_odometry_pose: [115.909569, -217.870814, 4.115067, -76.154285, -1.485810, -0.056010]
+    gt_distance: 16.11
+    odometry_error: [0.07, 0.09]
+  - name: campus0_typical
+    kind: loop
+    global: vbr/campus0_kf0867.mm
+    local: vbr/campus0_kf1159.mm
+    reference_pose: [-1.200100, -0.132200, -0.018800, 20.860000, -0.190000, -1.380000]
+    reference_quality: 0.714
+    gt_pose: [-1.345481, -0.114911, 0.001895, 20.336731, -0.092754, -1.537742]
+    initial_guess_odometry: [-0.640681, -0.001286, 0.001272, 19.786546, -0.063691, -1.355458]
+    global_odometry_pose: [278.955845, -12.507476, -1.505115, -168.832668, 1.030112, -0.216278]
+    local_odometry_pose: [279.584023, -12.382160, -1.492320, -149.043018, 0.978811, -1.210221]
+    gt_distance: 1.35
+    odometry_error: [0.71, 0.58]
+  - name: campus0_none
+    kind: no_loop
+    global: vbr/campus0_kf1159.mm
+    local: vbr/campus0_kf1245.mm
+    reference_pose: [219.484816, -158.609788, 5.395319, 28.585024, -0.969601, -1.800213]
+    initial_guess_odometry: [219.104836, -158.659104, 0.968543, 28.350635, -0.283312, -0.177275]
+    global_odometry_pose: [279.584023, -12.382160, -1.492320, -149.043018, 0.978811, -1.210221]
+    local_odometry_pose: [10.069370, 10.900855, -0.916510, -120.686599, 1.152789, -0.777456]
+    gt_distance: 270.85
+    odometry_error: [4.44, 1.78]
+  - name: campus1_yaw
+    kind: loop
+    global: vbr/campus1_kf0140.mm
+    local: vbr/campus1_kf0359.mm
+    reference_pose: [2.377200, 4.129300, 0.100700, -100.870000, 1.360000, -1.000000]
+    reference_quality: 0.605
+    gt_pose: [2.262498, 4.035947, 0.118463, -99.564796, 1.282170, -0.896069]
+    initial_guess_odometry: [2.246565, 4.103465, 0.119372, -99.667759, 1.196131, -1.029007]
+    global_odometry_pose: [69.274121, 110.983289, 2.010836, 48.567753, 0.970063, -1.003972]
+    local_odometry_pose: [67.683445, 115.384356, 2.020249, -51.100028, 0.043519, -1.816704]
+    gt_distance: 4.63
+    odometry_error: [0.07, 0.19]
+  - name: campus1_drift
+    kind: loop
+    global: vbr/campus1_kf0000.mm
+    local: vbr/campus1_kf1118.mm
+    reference_pose: [1.244200, -0.013600, -0.015800, -1.200000, -0.020000, 0.100000]
+    reference_quality: 0.678
+    gt_pose: [1.315113, -0.013696, 0.012181, -1.138821, 0.141484, 0.065863]
+    initial_guess_odometry: [0.705729, 1.824372, -0.596865, -2.221132, 0.313281, 0.183224]
+    global_odometry_pose: [0.000000, 0.000000, -0.000000, 0.000035, -0.362687, 0.532168]
+    local_odometry_pose: [0.709385, 1.829837, -0.575416, -2.218056, -0.028524, 0.729038]
+    gt_distance: 1.32
+    odometry_error: [2.03, 1.1]
+  - name: campus1_drift_map
+    kind: loop
+    global: vbr/campus1_kf0000_map.mm
+    local: vbr/campus1_kf1118.mm
+    reference_pose: [1.309800, -0.013000, -0.007600, -1.200000, 0.100000, 0.060000]
+    reference_quality: 0.899
+    gt_pose: [1.315113, -0.013696, 0.012181, -1.138821, 0.141484, 0.065863]
+    initial_guess_odometry: [0.705729, 1.824372, -0.596865, -2.221132, 0.313281, 0.183224]
+    global_odometry_pose: [0.000000, 0.000000, -0.000000, 0.000035, -0.362687, 0.532168]
+    local_odometry_pose: [0.709385, 1.829837, -0.575416, -2.218056, -0.028524, 0.729038]
+    gt_distance: 1.32
+    odometry_error: [2.03, 1.1]
+  - name: campus1_far
+    kind: loop
+    global: vbr/campus1_kf0662.mm
+    local: vbr/campus1_kf0848.mm
+    reference_pose: [1.674300, -18.491300, -0.427100, 82.280000, -2.120000, 0.010000]
+    reference_quality: 0.395
+    gt_pose: [1.631589, -18.355276, -0.455557, 82.319651, -2.134635, 0.109092]
+    initial_guess_odometry: [1.668822, -17.724608, -0.441329, 82.290057, -2.224926, 0.007904]
+    global_odometry_pose: [-17.586633, 4.331101, -1.204925, -87.667543, 0.004083, -1.442723]
+    local_odometry_pose: [-35.234127, 1.942085, -1.199970, -5.372442, -0.794688, -0.181601]
+    gt_distance: 18.43
+    odometry_error: [0.63, 0.14]
+  - name: campus1_typical
+    kind: loop
+    global: vbr/campus1_kf0661.mm
+    local: vbr/campus1_kf1115.mm
+    reference_pose: [-1.244900, 1.009600, 0.024800, -0.980000, -0.450000, 1.840000]
+    reference_quality: 0.657
+    gt_pose: [-1.158634, 0.989726, 0.025475, -0.185920, -0.708395, 1.928003]
+    initial_guess_odometry: [-2.766815, 1.515084, 0.710932, -0.895225, -0.732524, 1.848474]
+    global_odometry_pose: [-17.624810, 6.357746, -1.214774, -87.196111, -0.529462, -1.010011]
+    local_odometry_pose: [-16.234908, 9.202160, -0.556256, -88.078429, -1.277590, 0.846654]
+    gt_distance: 1.52
+    odometry_error: [1.83, 0.72]
+  - name: campus1_none
+    kind: no_loop
+    global: vbr/campus1_kf0359.mm
+    local: vbr/campus1_kf0848.mm
+    reference_pose: [23.989131, -151.451302, -6.348060, 45.877358, -2.149363, 0.656184]
+    initial_guess_odometry: [23.659749, -151.154855, -7.998203, 45.695352, -2.125581, 1.056177]
+    global_odometry_pose: [67.683445, 115.384356, 2.020249, -51.100028, 0.043519, -1.816704]
+    local_odometry_pose: [-35.234127, 1.942085, -1.199970, -5.372442, -0.794688, -0.181601]
+    gt_distance: 153.47
+    odometry_error: [1.71, 0.43]
+  - name: ciampino0_yaw
+    kind: loop
+    global: vbr/ciampino0_kf0633.mm
+    local: vbr/ciampino0_kf0885.mm
+    reference_pose: [-0.472700, 2.436200, -0.015700, 179.950000, -0.810000, 0.150000]
+    reference_quality: 0.69
+    gt_pose: [-0.847172, 2.437444, 0.007859, -179.987206, -0.781182, 0.371709]
+    initial_guess_odometry: [-0.893661, 2.490477, 0.026964, 179.848604, -1.001951, 0.180118]
+    global_odometry_pose: [45.914315, 209.190662, -6.726149, -113.401889, -1.481624, -0.153329]
+    local_odometry_pose: [48.555020, 209.021831, -6.728963, 66.444052, 0.480076, 0.329486]
+    gt_distance: 2.58
+    odometry_error: [0.07, 0.34]
+  - name: ciampino0_drift
+    kind: loop
+    global: vbr/ciampino0_kf0135.mm
+    local: vbr/ciampino0_kf4348.mm
+    reference_pose: [1.079400, -5.557600, 0.102600, 83.660000, 1.410000, -1.730000]
+    reference_quality: 0.545
+    gt_pose: [0.831820, -5.556833, 0.104781, 82.123778, 1.193573, -1.852327]
+    initial_guess_odometry: [-12.821075, -7.565869, -11.975630, 77.721842, -0.033849, -1.122673]
+    global_odometry_pose: [195.505742, -7.441973, -0.076337, 53.627794, 1.320247, -0.231506]
+    local_odometry_pose: [193.872096, -22.499561, -11.722723, 131.357060, 0.473051, 0.118183]
+    gt_distance: 5.62
+    odometry_error: [18.34, 4.63]
+  - name: ciampino0_drift_map
+    kind: loop
+    global: vbr/ciampino0_kf0135_map.mm
+    local: vbr/ciampino0_kf4348.mm
+    reference_pose: [1.088200, -5.575200, 0.102400, 83.390000, 1.260000, -1.740000]
+    reference_quality: 0.857
+    gt_pose: [0.831820, -5.556833, 0.104781, 82.123778, 1.193573, -1.852327]
+    initial_guess_odometry: [-12.821075, -7.565869, -11.975630, 77.721842, -0.033849, -1.122673]
+    global_odometry_pose: [195.505742, -7.441973, -0.076337, 53.627794, 1.320247, -0.231506]
+    local_odometry_pose: [193.872096, -22.499561, -11.722723, 131.357060, 0.473051, 0.118183]
+    gt_distance: 5.62
+    odometry_error: [18.34, 4.63]
+  - name: ciampino0_far
+    kind: loop
+    global: vbr/ciampino0_kf2326.mm
+    local: vbr/ciampino0_kf3251.mm
+    reference_pose: [-18.568000, 0.825100, 0.122700, 0.750000, -0.030000, 0.630000]
+    reference_quality: 0.332
+    gt_pose: [-18.539082, 0.793718, 0.085339, 0.725384, -0.038631, 0.616836]
+    initial_guess_odometry: [-20.019810, 2.907815, -5.356940, -0.289571, -0.016985, 1.497701]
+    global_odometry_pose: [178.688195, -97.044166, -2.225489, 83.219702, 1.889433, -3.522144]
+    local_odometry_pose: [173.749157, -116.790256, -7.087876, 82.931571, 1.854666, -2.033898]
+    gt_distance: 18.56
+    odometry_error: [6.02, 1.34]
+  - name: ciampino0_typical
+    kind: loop
+    global: vbr/ciampino0_kf0177.mm
+    local: vbr/ciampino0_kf4380.mm
+    reference_pose: [0.190900, 0.030200, -0.010000, 0.970000, -0.020000, 0.070000]
+    reference_quality: 0.852
+    gt_pose: [0.119869, 0.058850, 0.005084, 0.955010, 0.444014, 0.191500]
+    initial_guess_odometry: [-12.446690, 0.400226, -11.613323, -3.645709, -0.215472, 1.374116]
+    global_odometry_pose: [201.770890, 64.738595, -2.629390, 86.952504, 1.278782, -2.141754]
+    local_odometry_pose: [201.129573, 52.051830, -13.968889, 83.316966, 0.924731, -0.844424]
+    gt_distance: 0.13
+    odometry_error: [17.12, 4.8]
+  - name: ciampino0_none
+    kind: no_loop
+    global: vbr/ciampino0_kf0633.mm
+    local: vbr/ciampino0_kf3251.mm
+    reference_pose: [238.146520, 253.158722, -3.069725, -160.720176, -0.838321, -3.331258]
+    initial_guess_odometry: [248.300621, 246.809114, -6.123679, -163.676024, 0.475899, -2.597692]
+    global_odometry_pose: [45.914315, 209.190662, -6.726149, -113.401889, -1.481624, -0.153329]
+    local_odometry_pose: [173.749157, -116.790256, -7.087876, 82.931571, 1.854666, -2.033898]
+    gt_distance: 347.58
+    odometry_error: [12.36, 3.31]
+  - name: ciampino1_yaw
+    kind: loop
+    global: vbr/ciampino1_kf0194.mm
+    local: vbr/ciampino1_kf1626.mm
+    reference_pose: [0.013700, 0.918700, 0.013200, 179.890000, -1.930000, -1.150000]
+    reference_quality: 0.756
+    gt_pose: [-0.451460, 0.914530, 0.026292, 179.849869, -1.657392, -1.130030]
+    initial_guess_odometry: [0.455867, 0.962756, -1.686696, 177.258908, -1.993809, -1.155796]
+    global_odometry_pose: [49.974636, 109.619121, -3.315142, -178.781454, 1.130830, -2.883283]
+    local_odometry_pose: [49.571798, 108.733660, -5.056790, -1.621656, -2.982903, 1.781753]
+    gt_distance: 1.02
+    odometry_error: [1.94, 2.61]
+  - name: ciampino1_drift
+    kind: loop
+    global: vbr/ciampino1_kf0426.mm
+    local: vbr/ciampino1_kf2300.mm
+    reference_pose: [-4.212000, 2.510200, 0.087300, 178.190000, -0.100000, -2.320000]
+    reference_quality: 0.513
+    gt_pose: [-4.434709, 2.538138, 0.080833, 177.881643, -0.164019, -2.135296]
+    initial_guess_odometry: [-18.109775, 21.699322, -0.004841, 174.002583, -0.157733, -2.702867]
+    global_odometry_pose: [332.644283, -54.999199, 3.658720, 89.533790, 1.379166, -2.871227]
+    local_odometry_pose: [310.825635, -72.953066, 3.003130, -96.465378, -1.229280, 0.296769]
+    gt_distance: 5.11
+    odometry_error: [23.54, 3.92]
+  - name: ciampino1_drift_map
+    kind: loop
+    global: vbr/ciampino1_kf0426_map.mm
+    local: vbr/ciampino1_kf2300.mm
+    reference_pose: [-4.253800, 2.504400, 0.084400, 178.210000, -0.200000, -2.290000]
+    reference_quality: 0.97
+    gt_pose: [-4.434709, 2.538138, 0.080833, 177.881643, -0.164019, -2.135296]
+    initial_guess_odometry: [-18.109775, 21.699322, -0.004841, 174.002583, -0.157733, -2.702867]
+    global_odometry_pose: [332.644283, -54.999199, 3.658720, 89.533790, 1.379166, -2.871227]
+    local_odometry_pose: [310.825635, -72.953066, 3.003130, -96.465378, -1.229280, 0.296769]
+    gt_distance: 5.11
+    odometry_error: [23.54, 3.92]
+  - name: ciampino1_far
+    kind: loop
+    global: vbr/ciampino1_kf0693.mm
+    local: vbr/ciampino1_kf1725.mm
+    reference_pose: [6.441800, -17.178200, -0.326900, -59.880000, 0.360000, 0.320000]
+    reference_quality: 0.417
+    gt_pose: [6.155582, -17.395750, -0.376615, -60.548869, 0.437535, 0.571730]
+    initial_guess_odometry: [-0.303666, -14.244655, -0.212945, -62.581320, -0.017249, 0.980665]
+    global_odometry_pose: [162.672368, 277.797162, -4.569290, 151.212049, -0.156307, -0.249023]
+    local_odometry_pose: [169.798312, 290.135947, -4.721150, 88.630320, -0.310276, 1.004742]
+    gt_distance: 18.46
+    odometry_error: [7.19, 2.12]
+  - name: ciampino1_typical
+    kind: loop
+    global: vbr/ciampino1_kf0571.mm
+    local: vbr/ciampino1_kf1174.mm
+    reference_pose: [-0.168300, 0.074100, 0.000400, 1.230000, -0.170000, 0.100000]
+    reference_quality: 0.79
+    gt_pose: [-0.084681, 0.097142, 0.001108, 1.243072, -0.203311, 0.217373]
+    initial_guess_odometry: [-3.343177, 2.810579, -2.312359, -0.017719, -0.411995, 0.621280]
+    global_odometry_pose: [160.666892, 34.555420, -0.418806, 88.590509, 0.375918, -2.411704]
+    local_odometry_pose: [157.874301, 31.264077, -2.825399, 88.590143, -0.036458, -1.790489]
+    gt_distance: 0.13
+    odometry_error: [4.83, 1.34]
+  - name: ciampino1_none
+    kind: no_loop
+    global: vbr/ciampino1_kf1725.mm
+    local: vbr/ciampino1_kf2300.mm
+    reference_pose: [-358.589047, -159.747731, 2.242081, 176.361828, 0.162891, 0.278446]
+    initial_guess_odometry: [-359.567171, -149.473396, 12.294518, 174.877543, -1.448847, 1.325427]
+    global_odometry_pose: [169.798312, 290.135947, -4.721150, 88.630320, -0.310276, 1.004742]
+    local_odometry_pose: [310.825635, -72.953066, 3.003130, -96.465378, -1.229280, 0.296769]
+    gt_distance: 392.57
+    odometry_error: [14.41, 2.42]
+  - name: colosseo0_yaw
+    kind: loop
+    global: vbr/colosseo0_kf0475.mm
+    local: vbr/colosseo0_kf0559.mm
+    reference_pose: [-3.076600, 0.340000, 0.208700, 131.870000, -12.330000, 4.510000]
+    reference_quality: 0.684
+    gt_pose: [-3.186772, 0.482378, 0.255961, 133.465030, -13.571243, 3.964263]
+    initial_guess_odometry: [-3.192739, 0.377713, 0.228729, 133.209160, -13.340022, 3.857498]
+    global_odometry_pose: [116.986214, 14.276168, -2.219970, -24.791990, -1.938261, -4.050423]
+    local_odometry_pose: [114.247966, 15.973767, -2.126594, 108.081558, -9.057435, 5.231594]
+    gt_distance: 3.23
+    odometry_error: [0.11, 0.38]
+  - name: colosseo0_drift
+    kind: loop
+    global: vbr/colosseo0_kf0001.mm
+    local: vbr/colosseo0_kf0861.mm
+    reference_pose: [-0.475400, -1.199600, -0.024900, -110.480000, -2.860000, 1.130000]
+    reference_quality: 0.693
+    gt_pose: [-0.497598, -1.256398, -0.028555, -111.101359, -1.805440, 0.624923]
+    initial_guess_odometry: [8.434893, -4.320968, 4.261118, -106.432261, -1.957152, -0.543565]
+    global_odometry_pose: [2.262214, 0.285881, 0.116618, 8.310662, -2.550097, -0.673718]
+    local_odometry_pose: [11.027713, -2.749592, 4.799272, -98.224913, -1.879488, 2.094305]
+    gt_distance: 1.35
+    odometry_error: [10.37, 4.78]
+  - name: colosseo0_drift_map
+    kind: loop
+    global: vbr/colosseo0_kf0001_map.mm
+    local: vbr/colosseo0_kf0861.mm
+    reference_pose: [-0.490100, -1.195200, -0.011100, -110.570000, -2.660000, 0.960000]
+    reference_quality: 0.89
+    gt_pose: [-0.497598, -1.256398, -0.028555, -111.101359, -1.805440, 0.624923]
+    initial_guess_odometry: [8.434893, -4.320968, 4.261118, -106.432261, -1.957152, -0.543565]
+    global_odometry_pose: [2.262214, 0.285881, 0.116618, 8.310662, -2.550097, -0.673718]
+    local_odometry_pose: [11.027713, -2.749592, 4.799272, -98.224913, -1.879488, 2.094305]
+    gt_distance: 1.35
+    odometry_error: [10.37, 4.78]
+  - name: colosseo0_far
+    kind: loop
+    global: vbr/colosseo0_kf0074.mm
+    local: vbr/colosseo0_kf0589.mm
+    reference_pose: [7.679500, -2.821800, -0.609200, 46.440000, -3.840000, 2.820000]
+    reference_quality: 0.672
+    gt_pose: [7.744111, -2.703592, -0.667177, 46.452355, -4.363981, 2.900988]
+    initial_guess_odometry: [11.993049, -0.260214, -0.029171, 48.976852, -4.229557, 3.260260]
+    global_odometry_pose: [123.829155, 55.696414, -2.705532, 33.598590, -0.543203, 0.190320]
+    local_odometry_pose: [133.962312, 62.116220, -2.621865, 82.598673, -4.729623, 2.974388]
+    gt_distance: 8.23
+    odometry_error: [4.94, 2.58]
+  - name: colosseo0_typical
+    kind: loop
+    global: vbr/colosseo0_kf0061.mm
+    local: vbr/colosseo0_kf0571.mm
+    reference_pose: [3.507900, -7.519400, -0.426900, 14.000000, 4.310000, -2.430000]
+    reference_quality: 0.59
+    gt_pose: [3.552202, -7.484172, -0.460976, 13.880915, 3.464453, -2.201189]
+    initial_guess_odometry: [8.000725, -5.262616, 0.277401, 16.532566, 3.824944, -2.151667]
+    global_odometry_pose: [112.264768, 41.562678, -2.541703, 24.112808, -0.673492, 0.499578]
+    local_odometry_pose: [121.715251, 40.024472, -2.216171, 40.665526, 3.037089, -1.864020]
+    gt_distance: 8.3
+    odometry_error: [5.03, 2.67]
+  - name: colosseo0_wrong0
+    kind: wrong_match
+    global: vbr/colosseo0_kf0148.mm
+    local: vbr/colosseo0_kf0624.mm
+    reference_pose: [-14.922700, 1.156200, 0.714200, -8.810000, 2.110000, -1.920000]
+    reference_quality: 0.301
+    gt_pose: [-15.146924, 1.288173, 0.825817, -8.892789, 2.454616, -1.694662]
+    initial_guess_odometry: [-10.473541, 0.978959, 0.999284, -6.499476, 2.437120, -0.764055]
+    global_odometry_pose: [130.922632, 155.915331, -6.550325, 111.289549, -0.407299, 2.457107]
+    local_odometry_pose: [133.856571, 145.810326, -5.584469, 104.901882, 2.308183, 1.725356]
+    wrong_solutions:
+      - [0.240313, -0.396090, 0.194320, -0.446277, 3.125829, -1.875577]
+    gt_distance: 15.22
+    odometry_error: [4.69, 2.53]
+  - name: colosseo0_wrong1
+    kind: wrong_match
+    global: vbr/colosseo0_kf0097.mm
+    local: vbr/colosseo0_kf0600.mm
+    reference_pose: [-12.362900, -5.563100, 1.048900, 0.710000, -1.150000, -0.790000]
+    reference_quality: 0.505
+    gt_pose: [-12.493113, -5.553973, 0.982374, 0.781519, -0.709752, -0.764892]
+    initial_guess_odometry: [-7.666241, -6.044179, 1.251561, 3.245042, -0.129920, -0.084922]
+    global_odometry_pose: [131.924047, 87.790575, -3.254397, 78.415556, -4.127680, 2.033471]
+    local_odometry_pose: [136.334422, 79.005007, -2.772590, 81.663361, -4.365997, 1.711653]
+    wrong_solutions:
+      - [-0.509193, 2.887548, -0.005978, 6.933019, -1.057050, -0.860067]
+    gt_distance: 13.71
+    odometry_error: [4.86, 2.63]
+  - name: colosseo0_wrong2
+    kind: wrong_match
+    global: vbr/colosseo0_kf0009.mm
+    local: vbr/colosseo0_kf0854.mm
+    reference_pose: [-13.872300, 3.756100, 1.465300, -106.550000, -1.370000, -6.790000]
+    reference_quality: 0.382
+    gt_pose: [-13.840937, 3.745769, 1.504513, -108.074785, -1.244211, -7.553108]
+    initial_guess_odometry: [-5.178349, 2.625877, 5.176668, -103.117930, -1.733895, -8.427917]
+    global_odometry_pose: [20.620451, 4.577269, -0.095930, -2.299921, -5.825744, -0.103073]
+    local_odometry_pose: [15.054202, 7.438135, 4.523674, -105.534501, -0.505192, -2.731092]
+    wrong_solutions:
+      - [-0.706502, -0.447851, -0.010848, -93.681006, 0.013522, -8.425230]
+    gt_distance: 14.42
+    odometry_error: [9.48, 5.03]
+  - name: colosseo0_wrong3
+    kind: wrong_match
+    global: vbr/colosseo0_kf0220.mm
+    local: vbr/colosseo0_kf0653.mm
+    reference_pose: [-13.617900, 0.121700, 1.548700, 2.510000, 3.960000, 0.810000]
+    reference_quality: 0.406
+    gt_pose: [-13.610554, 0.108955, 1.607011, 2.798723, 4.651075, 0.550972]
+    initial_guess_odometry: [-8.992163, 0.928318, 1.828415, 4.941189, 4.487994, 1.303718]
+    global_odometry_pose: [68.444778, 218.558434, -7.848841, 140.766405, -6.100675, 4.023264]
+    local_odometry_pose: [75.021368, 212.158358, -6.926147, 145.999058, -1.944503, 4.765676]
+    wrong_solutions:
+      - [-0.039383, 0.083759, -0.071755, 18.340837, 3.620864, 1.967308]
+    gt_distance: 13.71
+    odometry_error: [4.7, 2.22]
+  - name: colosseo0_none
+    kind: no_loop
+    global: vbr/colosseo0_kf0220.mm
+    local: vbr/colosseo0_kf0861.mm
+    reference_pose: [-87.738986, 213.647827, 7.165839, 116.728782, -2.928942, 9.695722]
+    initial_guess_odometry: [-93.614905, 208.817288, 8.094826, 120.575606, -1.548006, 9.393732]
+    global_odometry_pose: [68.444778, 218.558434, -7.848841, 140.766405, -6.100675, 4.023264]
+    local_odometry_pose: [11.027713, -2.749592, 4.799272, -98.224913, -1.879488, 2.094305]
+    gt_distance: 231.07
+    odometry_error: [7.66, 4.09]
+  - name: diag0_yaw
+    kind: loop
+    global: vbr/diag0_kf0027.mm
+    local: vbr/diag0_kf0080.mm
+    reference_pose: [0.404200, -0.174400, 0.022600, 179.790000, -1.430000, -0.050000]
+    reference_quality: 0.815
+    gt_pose: [0.268933, -0.152026, -0.024921, -179.942193, -2.402183, -0.356086]
+    initial_guess_odometry: [0.245049, -0.153970, 0.007993, 179.958979, -2.217627, -0.198412]
+    global_odometry_pose: [37.377314, 2.375389, 0.239518, 1.205935, -0.735867, -0.433371]
+    local_odometry_pose: [37.625410, 2.226672, 0.251822, -178.851842, -1.481387, 0.234541]
+    gt_distance: 0.31
+    odometry_error: [0.04, 0.26]
+  - name: diag0_drift
+    kind: loop
+    global: vbr/diag0_kf0174.mm
+    local: vbr/diag0_kf0781.mm
+    reference_pose: [0.862800, 0.331000, -0.273800, -172.190000, 9.490000, -2.570000]
+    reference_quality: 0.835
+    gt_pose: [0.817683, 0.350921, -0.261522, -170.283944, 11.793377, -2.568963]
+    initial_guess_odometry: [0.796748, 0.317941, -1.654680, -171.138536, 11.686221, -2.716645]
+    global_odometry_pose: [-43.287878, -9.038489, 1.088296, -92.872425, -0.690174, -0.213136]
+    local_odometry_pose: [-43.017410, -9.869723, -0.557838, 96.055259, 12.335141, -2.392262]
+    gt_distance: 0.93
+    odometry_error: [1.39, 0.84]
+  - name: diag0_drift_map
+    kind: loop
+    global: vbr/diag0_kf0174_map.mm
+    local: vbr/diag0_kf0781.mm
+    reference_pose: [0.867800, 0.332300, -0.258300, -172.380000, 9.810000, -2.680000]
+    reference_quality: 0.979
+    gt_pose: [0.817683, 0.350921, -0.261522, -170.283944, 11.793377, -2.568963]
+    initial_guess_odometry: [0.796748, 0.317941, -1.654680, -171.138536, 11.686221, -2.716645]
+    global_odometry_pose: [-43.287878, -9.038489, 1.088296, -92.872425, -0.690174, -0.213136]
+    local_odometry_pose: [-43.017410, -9.869723, -0.557838, 96.055259, 12.335141, -2.392262]
+    gt_distance: 0.93
+    odometry_error: [1.39, 0.84]
+  - name: diag0_far
+    kind: loop
+    global: vbr/diag0_kf0688.mm
+    local: vbr/diag0_kf0738.mm
+    reference_pose: [9.185800, 3.942400, 8.412800, -146.660000, -14.610000, 0.800000]
+    reference_quality: 0.643
+    gt_pose: [9.152017, 4.015191, 8.380658, -146.990366, -15.983462, 1.303500]
+    initial_guess_odometry: [9.153771, 4.025272, 8.352032, -146.974422, -15.715568, 1.390985]
+    global_odometry_pose: [30.129901, -11.990949, -17.002929, -34.295171, 0.351551, 1.029735]
+    local_odometry_pose: [39.917930, -13.976800, -8.636230, 179.021237, -15.446407, 0.296494]
+    gt_distance: 13.04
+    odometry_error: [0.03, 0.28]
+  - name: diag0_typical
+    kind: loop
+    global: vbr/diag0_kf0021.mm
+    local: vbr/diag0_kf0087.mm
+    reference_pose: [0.015500, -0.225900, 0.007900, -177.560000, -0.250000, 0.180000]
+    reference_quality: 0.789
+    gt_pose: [-0.089266, -0.220062, 0.026585, -177.654801, -1.137122, 0.709707]
+    initial_guess_odometry: [-0.117222, -0.223613, 0.016821, -177.633000, -1.026777, 0.775883]
+    global_odometry_pose: [28.996961, 3.020202, 0.430594, -3.980792, 0.411022, 0.431062]
+    local_odometry_pose: [28.864601, 2.805139, 0.446573, 178.394221, -1.419615, 0.328087]
+    gt_distance: 0.24
+    odometry_error: [0.03, 0.13]
+  - name: diag0_wrong0
+    kind: wrong_match
+    global: vbr/diag0_kf0146.mm
+    local: vbr/diag0_kf0313.mm
+    reference_pose: [1.620885, -0.051605, -9.252045, -178.534182, -3.287464, -0.740776]
+    gt_pose: [1.620885, -0.051605, -9.252045, -178.534182, -3.287464, -0.740776]
+    initial_guess_odometry: [1.564727, -0.234603, -9.562227, -177.995979, -2.387412, -0.541584]
+    global_odometry_pose: [-21.560507, 6.308193, 0.794711, 178.608626, -0.944620, 1.491621]
+    local_odometry_pose: [-23.282553, 6.335627, -8.743287, 0.673003, -1.390442, -1.999476]
+    wrong_solutions:
+      - [0.226352, -0.311927, -0.026473, 179.959225, -2.318875, 5.842451]
+    gt_distance: 9.39
+    odometry_error: [0.36, 1.07]
+  - name: diag0_wrong1
+    kind: wrong_match
+    global: vbr/diag0_kf0113.mm
+    local: vbr/diag0_kf0326.mm
+    reference_pose: [0.160505, -7.055256, -9.679612, 104.842645, -7.973261, 1.229244]
+    gt_pose: [0.160505, -7.055256, -9.679612, 104.842645, -7.973261, 1.229244]
+    initial_guess_odometry: [-0.067949, -7.002665, -10.202142, 104.923781, -7.112365, 1.647585]
+    global_odometry_pose: [-2.826861, 3.819906, 0.711724, -105.715496, -2.654058, -4.245095]
+    local_odometry_pose: [-10.378948, 5.550939, -8.936858, -0.768706, -2.327437, 0.173673]
+    wrong_solutions:
+      - [-0.166870, -6.392533, -0.541636, 106.271983, -8.337052, 9.951246]
+    gt_distance: 11.98
+    odometry_error: [0.57, 0.97]
+  - name: diag0_wrong2
+    kind: wrong_match
+    global: vbr/diag0_kf0431.mm
+    local: vbr/diag0_kf0725.mm
+    reference_pose: [-0.057700, 1.197100, -6.703600, 176.430000, -22.320000, 2.590000]
+    reference_quality: 0.418
+    gt_pose: [-0.067078, 1.165477, -6.791725, 176.433121, -21.952752, 3.130143]
+    initial_guess_odometry: [0.039452, 1.206216, -6.277263, 176.122117, -21.552726, 3.298601]
+    global_odometry_pose: [40.683537, -13.907830, -4.881046, -178.144942, -10.835751, 3.259648]
+    local_odometry_pose: [39.530671, -15.507183, -10.961631, -0.591244, -10.911187, -0.697767]
+    wrong_solutions:
+      - [0.799951, 1.391961, -2.202390, 175.951787, -22.184754, 3.807190]
+    gt_distance: 6.89
+    odometry_error: [0.53, 0.5]
+  - name: diag0_none
+    kind: no_loop
+    global: vbr/diag0_kf0174.mm
+    local: vbr/diag0_kf0431.mm
+    reference_pose: [0.352449, 84.138541, -3.862401, -85.005505, -10.090688, 2.560445]
+    initial_guess_odometry: [0.583274, 84.131578, -5.663878, -85.144633, -10.565710, 2.577834]
+    global_odometry_pose: [-43.287878, -9.038489, 1.088296, -92.872425, -0.690174, -0.213136]
+    local_odometry_pose: [40.683537, -13.907830, -4.881046, -178.144942, -10.835751, 3.259648]
+    gt_distance: 84.23
+    odometry_error: [1.82, 0.49]
+  - name: pincio0_yaw
+    kind: loop
+    global: vbr/pincio0_kf0237.mm
+    local: vbr/pincio0_kf0653.mm
+    reference_pose: [-0.518800, 0.709400, -0.024000, 177.480000, 19.670000, -2.660000]
+    reference_quality: 0.662
+    gt_pose: [-0.606767, 0.692402, -0.031528, 178.314153, 19.359110, -2.182427]
+    initial_guess_odometry: [-2.260491, 1.340652, 0.743349, 176.007133, 19.307799, -2.075293]
+    global_odometry_pose: [171.239338, -8.870670, -3.785006, -35.067770, 11.252608, -4.369308]
+    local_odometry_pose: [170.327382, -6.528079, -2.717139, 142.596038, 8.310745, 3.034352]
+    gt_distance: 0.92
+    odometry_error: [1.94, 2.35]
+  - name: pincio0_drift
+    kind: loop
+    global: vbr/pincio0_kf0011.mm
+    local: vbr/pincio0_kf0844.mm
+    reference_pose: [-0.079100, -10.883300, 0.272900, 84.450000, 8.500000, -5.180000]
+    reference_quality: 0.358
+    gt_pose: [-0.235590, -10.796084, 0.246566, 83.997942, 8.354778, -4.813861]
+    initial_guess_odometry: [6.482176, -5.586912, 4.038182, 81.479630, 8.091956, -3.199214]
+    global_odometry_pose: [7.175097, 10.440663, 0.149057, 54.644619, 3.685863, 0.703813]
+    local_odometry_pose: [15.662555, 12.663257, 3.693383, 136.629224, 7.925663, 0.586403]
+    gt_distance: 10.8
+    odometry_error: [9.31, 3.19]
+  - name: pincio0_drift_map
+    kind: loop
+    global: vbr/pincio0_kf0011_map.mm
+    local: vbr/pincio0_kf0844.mm
+    reference_pose: [-0.181900, -10.862400, 0.263600, 84.070000, 8.480000, -4.870000]
+    reference_quality: 0.692
+    gt_pose: [-0.235590, -10.796084, 0.246566, 83.997942, 8.354778, -4.813861]
+    initial_guess_odometry: [6.482176, -5.586912, 4.038182, 81.479630, 8.091956, -3.199214]
+    global_odometry_pose: [7.175097, 10.440663, 0.149057, 54.644619, 3.685863, 0.703813]
+    local_odometry_pose: [15.662555, 12.663257, 3.693383, 136.629224, 7.925663, 0.586403]
+    gt_distance: 10.8
+    odometry_error: [9.31, 3.19]
+  - name: pincio0_far
+    kind: loop
+    global: vbr/pincio0_kf0161.mm
+    local: vbr/pincio0_kf0726.mm
+    reference_pose: [-6.869700, -9.799500, 0.859700, -165.530000, 4.920000, 2.650000]
+    reference_quality: 0.413
+    gt_pose: [-7.196913, -9.666397, 0.807370, -166.817924, 5.045313, 2.057359]
+    initial_guess_odometry: [-4.960983, -7.852898, 2.076488, -168.902315, 4.390012, 1.240063]
+    global_odometry_pose: [125.203816, 17.659779, -2.081389, 60.612123, 5.329398, 6.748124]
+    local_odometry_pose: [129.839385, 9.501472, -0.486182, -108.925001, 0.416136, -6.385041]
+    gt_distance: 12.08
+    odometry_error: [3.15, 2.27]
+  - name: pincio0_typical
+    kind: loop
+    global: vbr/pincio0_kf0274.mm
+    local: vbr/pincio0_kf0341.mm
+    reference_pose: [-0.391200, -0.968600, 0.134700, -20.700000, 1.820000, 2.790000]
+    reference_quality: 0.695
+    gt_pose: [-0.371149, -1.002620, 0.146248, -20.158963, 2.662335, 2.786747]
+    initial_guess_odometry: [-0.384852, -1.013937, 0.141204, -20.288098, 2.685099, 3.039262]
+    global_odometry_pose: [197.841908, -43.425319, -5.012820, -25.252578, 7.155336, -2.459213]
+    local_odometry_pose: [197.087767, -44.182941, -4.781740, -45.859092, 8.534044, -1.782331]
+    gt_distance: 1.08
+    odometry_error: [0.02, 0.29]
+  - name: pincio0_none
+    kind: no_loop
+    global: vbr/pincio0_kf0011.mm
+    local: vbr/pincio0_kf0274.mm
+    reference_pose: [66.553513, -187.315829, 1.629823, -79.100827, 5.317211, 2.172381]
+    initial_guess_odometry: [66.591179, -186.669890, 1.410257, -79.476891, 5.802851, 1.063526]
+    global_odometry_pose: [7.175097, 10.440663, 0.149057, 54.644619, 3.685863, 0.703813]
+    local_odometry_pose: [197.841908, -43.425319, -5.012820, -25.252578, 7.155336, -2.459213]
+    gt_distance: 198.79
+    odometry_error: [0.68, 1.24]
+  - name: spagna0_yaw
+    kind: loop
+    global: vbr/spagna0_kf0277.mm
+    local: vbr/spagna0_kf0626.mm
+    reference_pose: [-0.269400, 0.317300, 0.198300, 179.680000, 3.940000, -8.740000]
+    reference_quality: 0.748
+    gt_pose: [-0.373651, 0.327480, 0.171045, -179.877747, 2.853444, -8.170152]
+    initial_guess_odometry: [0.193523, 0.107691, 3.861569, 179.945556, 2.995639, -7.746205]
+    global_odometry_pose: [68.207385, -56.873927, 15.380329, 61.052986, -10.648828, -2.167431]
+    local_odometry_pose: [67.732710, -57.208049, 19.204438, -118.886391, 13.644375, -5.564590]
+    gt_distance: 0.53
+    odometry_error: [3.74, 0.49]
+  - name: spagna0_drift
+    kind: loop
+    global: vbr/spagna0_kf0102.mm
+    local: vbr/spagna0_kf0925.mm
+    reference_pose: [0.372300, -4.770500, -0.096900, 19.710000, -2.850000, -0.300000]
+    reference_quality: 0.672
+    gt_pose: [0.275033, -4.772407, -0.126039, 19.386344, -2.997118, -0.177468]
+    initial_guess_odometry: [1.086945, -4.772970, -7.701648, 19.306296, -4.548198, -2.594151]
+    global_odometry_pose: [-25.993295, 29.205537, -0.754320, -9.186624, 5.106162, -1.330876]
+    local_odometry_pose: [-26.381654, 24.253460, -8.409657, 10.164434, 0.710177, -2.159094]
+    gt_distance: 4.78
+    odometry_error: [7.62, 2.88]
+  - name: spagna0_drift_map
+    kind: loop
+    global: vbr/spagna0_kf0102_map.mm
+    local: vbr/spagna0_kf0925.mm
+    reference_pose: [0.330300, -4.770000, -0.116300, 19.200000, -3.350000, -0.430000]
+    reference_quality: 0.929
+    gt_pose: [0.275033, -4.772407, -0.126039, 19.386344, -2.997118, -0.177468]
+    initial_guess_odometry: [1.086945, -4.772970, -7.701648, 19.306296, -4.548198, -2.594151]
+    global_odometry_pose: [-25.993295, 29.205537, -0.754320, -9.186624, 5.106162, -1.330876]
+    local_odometry_pose: [-26.381654, 24.253460, -8.409657, 10.164434, 0.710177, -2.159094]
+    gt_distance: 4.78
+    odometry_error: [7.62, 2.88]
+  - name: spagna0_far
+    kind: loop
+    global: vbr/spagna0_kf0187.mm
+    local: vbr/spagna0_kf0452.mm
+    reference_pose: [-12.482700, 2.657200, -0.832500, -6.890000, 2.810000, -2.470000]
+    reference_quality: 0.531
+    gt_pose: [-12.405887, 2.548031, -0.835035, -6.219807, 2.459240, -2.668403]
+    initial_guess_odometry: [-12.693709, 2.461373, 2.538930, -6.229739, 1.810069, -2.911623]
+    global_odometry_pose: [-6.229575, -54.466658, -2.058740, -121.280212, 5.729892, -0.386550]
+    local_odometry_pose: [2.315796, -45.174417, 1.718250, -127.572496, 7.463789, -3.923337]
+    gt_distance: 12.69
+    odometry_error: [3.39, 0.69]
+  - name: spagna0_typical
+    kind: loop
+    global: vbr/spagna0_kf0000.mm
+    local: vbr/spagna0_kf0125.mm
+    reference_pose: [-4.360800, 7.552300, 0.290300, -23.960000, 5.370000, -2.530000]
+    reference_quality: 0.475
+    gt_pose: [-4.298705, 7.543357, 0.254840, -22.639490, 4.865793, -2.307761]
+    initial_guess_odometry: [-4.385123, 7.493509, -0.633835, -22.463796, 4.934101, -2.636361]
+    global_odometry_pose: [-0.000000, 0.000000, 0.000000, -0.000027, -0.891304, 0.224492]
+    local_odometry_pose: [-4.375186, 7.495937, -0.672610, -22.418344, 4.195983, -2.086895]
+    gt_distance: 8.69
+    odometry_error: [0.89, 0.39]
+  - name: spagna0_none
+    kind: no_loop
+    global: vbr/spagna0_kf0102.mm
+    local: vbr/spagna0_kf0277.mm
+    reference_pose: [105.190947, -70.022823, 24.000973, 71.183740, -12.268818, -7.125259]
+    initial_guess_odometry: [104.875485, -70.511194, 23.938950, 71.121326, -13.594688, -6.645235]
+    global_odometry_pose: [-25.993295, 29.205537, -0.754320, -9.186624, 5.106162, -1.330876]
+    local_odometry_pose: [68.207385, -56.873927, 15.380329, 61.052986, -10.648828, -2.167431]
+    gt_distance: 128.62
+    odometry_error: [0.58, 1.41]

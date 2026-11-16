@@ -18,6 +18,7 @@
   <license file="datasets/radish/LICENSE">CC-BY-3.0</license>
   <license file="datasets/ual/LICENSE">CC-BY-3.0</license>
   <license file="datasets/mulran/LICENSE">CC-BY-NC-SA-4.0</license>
+  <license file="datasets/loop_closures/vbr/LICENSE">CC-BY-SA-4.0</license>
 
   <url type="website">https://github.com/MOLAorg/</url>
 
