@@ -6,10 +6,6 @@
 | ROS 2 Lyrical (u26.04) | [![Build Status](https://build.ros2.org/job/Ldev__mola_test_datasets__ubuntu_resolute_amd64/badge/icon)](https://build.ros2.org/job/Ldev__mola_test_datasets__ubuntu_resolute_amd64/) | [![Build Status](https://build.ros2.org/job/Lbin_uR64__mola_test_datasets__ubuntu_resolute_amd64__binary/badge/icon)](https://build.ros2.org/job/Lbin_uR64__mola_test_datasets__ubuntu_resolute_amd64__binary/) | [![Version](https://img.shields.io/ros/v/lyrical/mola_test_datasets)](https://index.ros.org/search/?term=mola_test_datasets) |
 | ROS 2 Rolling (u26.04) | [![Build Status](https://build.ros2.org/job/Rdev__mola_test_datasets__ubuntu_resolute_amd64/badge/icon)](https://build.ros2.org/job/Rdev__mola_test_datasets__ubuntu_resolute_amd64/) | [![Build Status](https://build.ros2.org/job/Rbin_uR64__mola_test_datasets__ubuntu_resolute_amd64__binary/badge/icon)](https://build.ros2.org/job/Rbin_uR64__mola_test_datasets__ubuntu_resolute_amd64__binary/) | [![Version](https://img.shields.io/ros/v/rolling/mola_test_datasets)](https://index.ros.org/search/?term=mola_test_datasets) |
 
-| EOL Distro |  Last published version |
-| ---    |  ---            |
-| ROS 2 Iron (u22.04) |  [![Version](https://img.shields.io/ros/v/iron/mola_test_datasets)](https://index.ros.org/search/?term=mola_test_datasets) |
-
 
 # mola_test_datasets
 Small SLAM dataset extracts used for demos or unit tests from the main MOLA repository.
